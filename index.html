@@ -2,38 +2,184 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=docs/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Merrimore</title>
-    <link rel="canonical" href="docs/" />
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 2rem;
-        background-color: #f8f6f4;
-        color: #2c2a28;
-        display: flex;
-        min-height: 100vh;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-      }
-
-      a {
-        color: #6c4f37;
-      }
-    </style>
-    <script>
-      window.location.replace("docs/");
-    </script>
+    <link rel="stylesheet" href="docs/styles.css" />
   </head>
-  <body>
-    <div>
-      <h1>Redirecting to Merrimore</h1>
-      <p>
-        If you are not redirected automatically, <a href="docs/">click here</a>
-        to visit the site.
-      </p>
-    </div>
+  <body id="top">
+    <header class="hero">
+      <nav class="nav">
+        <a class="brand" href="#top">Merrimore</a>
+        <ul class="nav__links">
+          <li><a href="#story">Story</a></li>
+          <li><a href="#experiences">Experiences</a></li>
+          <li><a href="#spaces">Spaces</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="hero__content">
+        <p class="eyebrow">Boutique hospitality &amp; gatherings</p>
+        <h1>Spaces crafted for meaningful moments.</h1>
+        <p>
+          Merrimore pairs signature interiors with attentive service to create
+          intimate stays, retreats, and celebrations that feel personal from the
+          first hello to the final toast.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#experiences">Explore our experiences</a>
+          <a class="button button--ghost" href="#contact">Plan your stay</a>
+        </div>
+      </div>
+      <div class="hero__image" role="presentation" aria-hidden="true"></div>
+    </header>
+
+    <main>
+      <section id="story" class="section section--light">
+        <div class="section__inner">
+          <h2>A coastal heritage, reimagined.</h2>
+          <p>
+            Born along the rugged Atlantic, Merrimore is inspired by warm
+            seaside inns and the timeless rituals of gathering. We infuse modern
+            comfort with layered textures, original art, and curated playlists
+            that evolve throughout the day.
+          </p>
+          <p>
+            Each Merrimore setting is shaped by local artisans and the stories
+            of the community. The result: soulful destinations that invite you
+            to linger longer.
+          </p>
+        </div>
+      </section>
+
+      <section id="experiences" class="section">
+        <div class="section__inner">
+          <h2>Signature experiences</h2>
+          <div class="cards">
+            <article class="card">
+              <h3>Gatherings &amp; celebrations</h3>
+              <p>
+                From sunset welcome receptions to candlelit suppers, our team
+                choreographs every moment with menus, florals, and music tailored
+                to your guests.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Retreats &amp; workshops</h3>
+              <p>
+                Invite your collective to reset with chef-led nourishment,
+                immersive breakout spaces, and restorative programming crafted by
+                local wellness partners.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Elevated stays</h3>
+              <p>
+                Thoughtful suites with private terraces, soaking tubs, and
+                curated amenities welcome you back after days on the coast or
+                evenings exploring the city.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="spaces" class="section section--light">
+        <div class="section__inner section__inner--split">
+          <div>
+            <h2>Spaces with a sense of place</h2>
+            <p>
+              Layered textures, linen drapery, and sculptural lighting anchor
+              every Merrimore interior. Sliding doors open to salt air patios,
+              while fireplaces and library corners invite quiet conversation.
+            </p>
+            <ul class="feature-list">
+              <li>Three signature residences with private outdoor courtyards</li>
+              <li>Gathering hall for up to 120 guests</li>
+              <li>Chef's kitchen and tasting counter</li>
+              <li>Wellness studio with morning movement and evening sound baths</li>
+            </ul>
+          </div>
+          <figure class="media-card">
+            <img src="docs/assets/hero-pattern.svg" alt="Abstract coastal pattern" />
+            <figcaption>
+              A custom Merrimore motif, inspired by low-tide tidal pools.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section--accent">
+        <div class="section__inner section__inner--stack">
+          <p class="eyebrow">What our guests say</p>
+          <blockquote>
+            “From the welcome tea to the final farewell brunch, Merrimore made
+            our family reunion unforgettable. Every detail felt personal.”
+          </blockquote>
+          <p class="quote-source">— The Abbott Family</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="press-heading">
+        <div class="section__inner">
+          <h2 id="press-heading">Press &amp; accolades</h2>
+          <div class="press-grid">
+            <article>
+              <h3>Coastal Living</h3>
+              <p>“A masterclass in modern seaside hospitality.”</p>
+            </article>
+            <article>
+              <h3>Gather Journal</h3>
+              <p>“Intimate spaces designed for connection and creativity.”</p>
+            </article>
+            <article>
+              <h3>Design Anthology</h3>
+              <p>“Quiet luxury defined by hand-crafted details.”</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section section--light">
+        <div class="section__inner section__inner--split">
+          <div>
+            <h2>Plan your Merrimore moment</h2>
+            <p>
+              Share the vision for your gathering, and our concierge team will
+              craft a tailored itinerary, from room blocks to signature menus
+              and unforgettable excursions.
+            </p>
+          </div>
+          <form class="contact-form">
+            <label>
+              Name
+              <input type="text" name="name" placeholder="Your name" />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" placeholder="you@email.com" />
+            </label>
+            <label>
+              Event details
+              <textarea name="details" rows="4" placeholder="Share dates, guest count, and inspiration"></textarea>
+            </label>
+            <button type="submit" class="button button--primary">Start planning</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <p>&copy; <span id="year"></span> Merrimore Hospitality</p>
+        <a href="mailto:hello@merrimore.com">hello@merrimore.com</a>
+      </div>
+    </footer>
+
+    <script>
+      const yearEl = document.getElementById("year");
+      if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+      }
+    </script>
   </body>
 </html>
