@@ -1,15 +1,15 @@
 # Shopping Cart App
 
-This repository contains the static assets for the Merrimore boutique hospitality landing page. The site is now located under the `docs/` directory so that GitHub Pages can publish it automatically using the **main branch / docs folder** configuration.
+This repository contains the static assets for the Merrimore boutique hospitality landing page. The full site is available from the repository root (`index.html`) so that GitHub Pages works immediately with the **main branch / root** setting, while the same files are also kept inside `docs/` for teams that prefer the **main branch / docs folder** configuration.
 
 ## Getting started
 
-Open `docs/index.html` directly in your browser or use a simple HTTP server such as `npx serve docs` for local development. The repository root also contains a lightweight `index.html` that redirects to the `docs/` folder, which makes the site available even if GitHub Pages is configured to publish from the root of the `main` branch.
+Open `index.html` directly in your browser or use a simple HTTP server such as `npx serve .` for local development. If you prefer to work from the `docs/` folder, `docs/index.html` contains the same markup and styles.
 
 ## Deployment
 
 1. Go to the repository settings on GitHub.
-2. In **Pages**, choose the `main` branch and the `/docs` folder.
-3. Save the settings – GitHub Pages will serve the contents of `docs/index.html` at `https://<username>.github.io/shopping-cart-app/`.
+2. In **Pages**, choose either `main` + `/ (root)` or `main` + `/docs`.
+3. Save the settings – GitHub Pages will serve the contents of the selected location at `https://<username>.github.io/shopping-cart-app/`.
 
-The assets referenced by the page use relative paths, so they resolve correctly whether the site is served locally or by GitHub Pages.
+The assets referenced by the page use relative paths, so they resolve correctly whether the site is served from the repository root or from the `docs/` directory.
