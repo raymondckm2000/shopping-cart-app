@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f2c14e" stop-opacity="0.9" />
+      <stop offset="60%" stop-color="#f9deb1" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#0b1f30" stop-opacity="0.8" />
+    </linearGradient>
+    <pattern id="organic" x="0" y="0" width="0.25" height="0.25" patternUnits="objectBoundingBox">
+      <path
+        d="M12 24c8-8 20-8 28 0s20 8 28 0 20-8 28 0 20 8 28 0"
+        fill="none"
+        stroke="#ffffff"
+        stroke-opacity="0.4"
+        stroke-width="4"
+        stroke-linecap="round"
+      />
+    </pattern>
+  </defs>
+  <rect width="900" height="1200" fill="url(#gradient)" />
+  <rect width="900" height="1200" fill="url(#organic)" opacity="0.45" />
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="3">
+    <path d="M-20 200c160 40 320-40 480 0s320-40 480 0" />
+    <path d="M-20 540c160 40 320-40 480 0s320-40 480 0" />
+    <path d="M-20 880c160 40 320-40 480 0s320-40 480 0" />
+  </g>
+</svg>
