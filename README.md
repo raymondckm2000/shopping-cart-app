@@ -4,7 +4,7 @@ This repository contains the static assets for the Merrimore boutique hospitalit
 
 ## Getting started
 
-Open `docs/index.html` directly in your browser or use a simple HTTP server such as `npx serve docs` for local development.
+Open `docs/index.html` directly in your browser or use a simple HTTP server such as `npx serve docs` for local development. The repository root also contains a lightweight `index.html` that redirects to the `docs/` folder, which makes the site available even if GitHub Pages is configured to publish from the root of the `main` branch.
 
 ## Deployment
 
