@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessibility Test Page</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      a.skip-link {
+        position: absolute;
+        left: -999px;
+        top: 0;
+        background: #005fcc;
+        color: white;
+        padding: 0.75rem 1rem;
+      }
+
+      a.skip-link:focus {
+        left: 0.5rem;
+        top: 0.5rem;
+        z-index: 1000;
+      }
+
+      header,
+      main,
+      footer {
+        padding: 1.5rem;
+      }
+
+      header {
+        background: #f0f4ff;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 1rem;
+        padding: 0;
+        list-style: none;
+      }
+
+      fieldset {
+        border: 2px solid #005fcc;
+        padding: 1rem;
+      }
+
+      label,
+      legend {
+        font-weight: 600;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+      }
+
+      tbody tr:nth-child(even) {
+        background: rgba(0, 95, 204, 0.1);
+      }
+
+      .card-list {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+        padding: 0;
+        list-style: none;
+      }
+
+      .card {
+        border: 1px solid #d0d7de;
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+
+      footer {
+        background: #111827;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header role="banner">
+      <h1>Accessibility Test Page</h1>
+      <p>
+        Use this page to experiment with keyboard navigation, screen reader
+        announcements, color contrast, and other accessibility tooling.
+      </p>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#forms">Forms</a></li>
+          <li><a href="#tables">Tables</a></li>
+          <li><a href="#widgets">Interactive widgets</a></li>
+          <li><a href="#footer">Footer</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <section aria-labelledby="introduction-heading">
+        <h2 id="introduction-heading">Introduction</h2>
+        <p>
+          Each section below highlights a different component that commonly
+          appears on websites. All controls are labeled, and landmarks are
+          provided to make the structure easy to navigate with assistive
+          technology.
+        </p>
+        <figure>
+          <img
+            src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80"
+            alt="Developer tools displayed on a laptop screen"
+            width="600"
+            height="400"
+          />
+          <figcaption>
+            Example image with descriptive alternative text and a caption.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="forms" aria-labelledby="forms-heading">
+        <h2 id="forms-heading">Forms</h2>
+        <p>
+          This sample form demonstrates accessible labels, fieldsets, and helper
+          text. Try navigating through it with the keyboard.
+        </p>
+        <form aria-describedby="contact-help">
+          <p id="contact-help">
+            All fields marked with an asterisk (<span aria-hidden="true">*</span>)
+            are required.
+          </p>
+          <div>
+            <label for="full-name">Full name *</label>
+            <input id="full-name" name="full-name" type="text" required />
+          </div>
+          <div>
+            <label for="email">Email address *</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div>
+            <label for="topic">Topic</label>
+            <select id="topic" name="topic">
+              <option value="bug">Report a bug</option>
+              <option value="feature">Request a feature</option>
+              <option value="feedback">General feedback</option>
+            </select>
+          </div>
+          <fieldset>
+            <legend>Preferred contact method *</legend>
+            <div>
+              <input id="contact-email" name="contact-method" type="radio" value="email" required />
+              <label for="contact-email">Email</label>
+            </div>
+            <div>
+              <input id="contact-phone" name="contact-method" type="radio" value="phone" />
+              <label for="contact-phone">Phone</label>
+            </div>
+          </fieldset>
+          <div>
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+          </div>
+          <div>
+            <input id="consent" type="checkbox" name="consent" required />
+            <label for="consent">I agree to the terms and conditions *</label>
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </section>
+
+      <section id="tables" aria-labelledby="tables-heading">
+        <h2 id="tables-heading">Tables</h2>
+        <p>
+          This table includes a caption and header cells for screen reader
+          clarity.
+        </p>
+        <table>
+          <caption>Audit checklist progress</caption>
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Status</th>
+              <th scope="col">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Keyboard navigation</th>
+              <td>Complete</td>
+              <td>Alex</td>
+            </tr>
+            <tr>
+              <th scope="row">Color contrast</th>
+              <td>In progress</td>
+              <td>Morgan</td>
+            </tr>
+            <tr>
+              <th scope="row">Screen reader testing</th>
+              <td>Not started</td>
+              <td>Riley</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="widgets" aria-labelledby="widgets-heading">
+        <h2 id="widgets-heading">Interactive widgets</h2>
+        <p>
+          The cards below are presented as an unordered list to ensure that the
+          relationships are clear. Each button includes context in its text so
+          that it can be understood when announced out of context.
+        </p>
+        <ul class="card-list">
+          <li class="card">
+            <h3>Documentation</h3>
+            <p>Find references for WCAG guidelines and ARIA patterns.</p>
+            <button type="button">Read documentation</button>
+          </li>
+          <li class="card">
+            <h3>Checklists</h3>
+            <p>Track your manual accessibility audits and remediation work.</p>
+            <button type="button">View checklists</button>
+          </li>
+          <li class="card">
+            <h3>Simulators</h3>
+            <p>Simulate color blindness, reduced motion, and other conditions.</p>
+            <button type="button">Open simulators</button>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer id="footer" role="contentinfo">
+      <p>Questions? Email <a href="mailto:accessibility@example.com">accessibility@example.com</a>.</p>
+      <address>
+        Accessibility Team<br />
+        123 Inclusion Way<br />
+        Anywhere, CA 94101
+      </address>
+    </footer>
+  </body>
+</html>
