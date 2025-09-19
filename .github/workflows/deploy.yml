@@ -2,9 +2,13 @@ name: Deploy static site
 
 on:
   push:
+codex/fix-accessibility-issues-on-site-m08wfu
     branches:
       - main
       - work
+=======
+    branches: [work]
+main
   workflow_dispatch:
 
 permissions:

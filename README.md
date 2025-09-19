@@ -1,9 +1,14 @@
 # Shopping Cart App
 
 This repository contains the static assets for the Merrimore boutique hospitality landing page. The full site is available from
+ codex/fix-accessibility-issues-on-site-m08wfu
 the repository root (`index.html`) so that GitHub Pages works immediately with either the **main branch / root** or **work branch /
 root** setting, while the same files are also kept inside `docs/` for teams that prefer the **main branch / docs folder** or **work
 branch / docs folder** configuration.
+=======
+the repository root (`index.html`) so that GitHub Pages works immediately with the **work branch / root** setting, while the same
+files are also kept inside `docs/` for teams that prefer the **work branch / docs folder** configuration.
+ main
 
 ## Getting started
 
@@ -13,9 +18,15 @@ to work from the `docs/` folder, `docs/index.html` contains the same markup and 
 ## Deployment
 
 The repository ships with an automated GitHub Actions workflow (`.github/workflows/deploy.yml`) that publishes the static files
+ codex/fix-accessibility-issues-on-site-m08wfu
 to GitHub Pages whenever the `main` or `work` branch is updated. No manual build tooling is required.
 
 1. Push your changes to `main` or `work`.
+=======
+to GitHub Pages whenever the `work` branch is updated. No manual build tooling is required.
+
+1. Push your changes to `work`.
+ main
 2. The workflow bundles `index.html` and the entire `docs/` directory into a `public/` folder artifact and deploys it to the
    `gh-pages` environment.
 3. The site becomes available at `https://<username>.github.io/<repository>/` as soon as the deployment completes. For a user
