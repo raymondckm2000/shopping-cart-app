@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Merrimore &mdash; Root Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="docs/styles.css" />
+  </head>
+  <body id="top">
+    <header class="hero">
+      <nav class="nav">
+        <a class="brand" href="index.html">Merrimore</a>
+        <ul class="nav__links">
+          <li><a href="index.html#story">Story</a></li>
+          <li><a href="index.html#experiences">Experiences</a></li>
+          <li><a href="index.html#spaces">Spaces</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="hero__content">
+        <p class="eyebrow">Additional page</p>
+        <h1>Discover more about Merrimore.</h1>
+        <p>
+          This root-level HTML page showcases how to add an extra static document
+          alongside the primary landing experience.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="index.html">Return to home</a>
+          <a class="button button--ghost" href="#about">Learn more</a>
+        </div>
+      </div>
+      <div class="hero__image" role="presentation" aria-hidden="true"></div>
+    </header>
+
+    <main>
+      <section class="section section--light" id="about">
+        <div class="section__inner">
+          <h2>Why this page exists</h2>
+          <p>
+            Merrimore's main landing page lives at <code>index.html</code>. This
+            companion page resides in the repository root as well, offering a
+            lightweight template that can be adapted for announcements, seasonal
+            campaigns, or additional storytelling without altering the primary
+            flow.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section__inner section__inner--split">
+          <article>
+            <h3>Reuse shared styles</h3>
+            <p>
+              The layout reuses the global typography, color palette, and
+              component classes defined in <code>docs/styles.css</code> so that
+              the visual language remains cohesive across every page.
+            </p>
+          </article>
+          <article>
+            <h3>Stay connected</h3>
+            <p>
+              Keep exploring by heading back to the main site or linking out to
+              other Merrimore experiences. All navigation items point to the
+              existing sections for a seamless journey.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="section section--accent">
+      <div class="section__inner section__inner--stack">
+        <p>&copy; <span id="year"></span> Merrimore Boutique Hospitality</p>
+        <a class="button button--ghost" href="#top">Back to top</a>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
