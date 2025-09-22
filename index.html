@@ -98,23 +98,47 @@
           </div>
           <div class="product-gallery__grid" role="list">
             <figure class="product-gallery__item" role="listitem">
-              <img
-                src="docs/images/product-front.png"
-                alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
-                loading="lazy"
-              />
+              <button
+                type="button"
+                class="product-gallery__zoom"
+                aria-label="放大檢視圖片"
+                aria-haspopup="dialog"
+                aria-controls="image-lightbox"
+              >
+                <img
+                  src="docs/images/product-front.png"
+                  alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
+                  loading="lazy"
+                />
+              </button>
               <figcaption>正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。</figcaption>
             </figure>
             <figure class="product-gallery__item" role="listitem">
-              <img
-                src="docs/images/product-back.png"
-                alt="牧野嚼樂山羊角背面包裝與成分標示。"
-                loading="lazy"
-              />
+              <button
+                type="button"
+                class="product-gallery__zoom"
+                aria-label="放大檢視圖片"
+                aria-haspopup="dialog"
+                aria-controls="image-lightbox"
+              >
+                <img
+                  src="docs/images/product-back.png"
+                  alt="牧野嚼樂山羊角背面包裝與成分標示。"
+                  loading="lazy"
+                />
+              </button>
               <figcaption>背面標示潔淨來源、營養成分與餵食指南，資訊一目瞭然。</figcaption>
             </figure>
             <figure class="product-gallery__item" role="listitem">
-              <img src="docs/images/product-horns.png" alt="牧野嚼樂精選山羊角的實拍特寫。" loading="lazy" />
+              <button
+                type="button"
+                class="product-gallery__zoom"
+                aria-label="放大檢視圖片"
+                aria-haspopup="dialog"
+                aria-controls="image-lightbox"
+              >
+                <img src="docs/images/product-horns.png" alt="牧野嚼樂精選山羊角的實拍特寫。" loading="lazy" />
+              </button>
               <figcaption>低溫風乾保留天然紋理與膠原，厚實耐咬，提供毛孩滿足嚼勁。</figcaption>
             </figure>
           </div>
@@ -391,6 +415,21 @@
       </section>
     </main>
 
+    <div
+      class="lightbox"
+      id="image-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <div class="lightbox__content" role="document">
+        <button type="button" class="lightbox__close" aria-label="關閉圖片" data-lightbox-close>&times;</button>
+        <img class="lightbox__image" src="" alt="" />
+        <p class="lightbox__caption"></p>
+      </div>
+    </div>
+
     <footer class="footer">
       <div class="container">
         <div class="footer__inner">
@@ -401,10 +440,89 @@
     </footer>
 
     <script>
-      const yearEl = document.getElementById('year');
-      if (yearEl) {
-        yearEl.textContent = new Date().getFullYear();
-      }
+      (() => {
+        const yearEl = document.getElementById('year');
+        if (yearEl) {
+          yearEl.textContent = new Date().getFullYear();
+        }
+
+        const lightbox = document.getElementById('image-lightbox');
+        if (!lightbox) {
+          return;
+        }
+
+        const lightboxImage = lightbox.querySelector('.lightbox__image');
+        const lightboxCaption = lightbox.querySelector('.lightbox__caption');
+        const closeTriggers = lightbox.querySelectorAll('[data-lightbox-close]');
+        let lastFocusedElement = null;
+
+        function openLightbox(trigger) {
+          const img = trigger.querySelector('img');
+          if (!img || !lightboxImage) {
+            return;
+          }
+
+          const figure = trigger.closest('figure');
+          const captionEl = figure ? figure.querySelector('figcaption') : null;
+
+          lightboxImage.src = img.currentSrc || img.src;
+          lightboxImage.alt = img.alt || '';
+
+          if (lightboxCaption) {
+            lightboxCaption.textContent = captionEl ? captionEl.textContent : '';
+          }
+
+          lightbox.classList.add('lightbox--open');
+          lightbox.removeAttribute('aria-hidden');
+          document.body.classList.add('lightbox-open');
+
+          lastFocusedElement = document.activeElement;
+          const closeButton = lightbox.querySelector('.lightbox__close');
+          if (closeButton) {
+            closeButton.focus();
+          }
+        }
+
+        function closeLightbox() {
+          if (lightboxImage) {
+            lightboxImage.src = '';
+            lightboxImage.alt = '';
+          }
+
+          if (lightboxCaption) {
+            lightboxCaption.textContent = '';
+          }
+
+          lightbox.classList.remove('lightbox--open');
+          lightbox.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('lightbox-open');
+
+          if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+            lastFocusedElement.focus();
+          }
+          lastFocusedElement = null;
+        }
+
+        document.querySelectorAll('.product-gallery__zoom').forEach((button) => {
+          button.addEventListener('click', () => openLightbox(button));
+        });
+
+        closeTriggers.forEach((trigger) => {
+          trigger.addEventListener('click', closeLightbox);
+        });
+
+        lightbox.addEventListener('click', (event) => {
+          if (event.target === lightbox) {
+            closeLightbox();
+          }
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && lightbox.classList.contains('lightbox--open')) {
+            closeLightbox();
+          }
+        });
+      })();
     </script>
   </body>
 </html>
