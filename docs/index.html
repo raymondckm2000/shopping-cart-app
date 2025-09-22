@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Merrimore Pet Provisions | Fresh Meals for Dogs & Cats</title>
+    <title>牧野嚼樂山羊角｜天然狗狗咀嚼零食</title>
+    <meta
+      name="description"
+      content="牧野嚼樂山羊角嚴選100%天然放養山羊角，經三重清潔與消毒，為狗狗提供安全、耐咀嚼且有助潔牙的天然零食。"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,233 +19,285 @@
   <body id="top">
     <header class="site-header">
       <div class="container">
-        <nav class="nav" aria-label="Primary">
-          <a class="brand" href="#top">Merrimore</a>
+        <nav class="nav" aria-label="主要導覽">
+          <a class="brand" href="#top">牧野嚼樂</a>
           <ul class="nav__links">
-            <li><a href="#highlights">Our Promise</a></li>
-            <li><a href="#shop">Shop</a></li>
-            <li><a href="#nutrition">Nutrition</a></li>
-            <li><a href="#community">Community</a></li>
+            <li><a href="#highlights">產品亮點</a></li>
+            <li><a href="#shop">規格選購</a></li>
+            <li><a href="#guide">使用指南</a></li>
+            <li><a href="#faq">常見問題</a></li>
+            <li><a href="#stories">顧客分享</a></li>
           </ul>
           <div class="nav__cta">
-            <a class="button button--ghost" href="#community">Find a recipe</a>
-            <a class="button button--primary" href="#subscribe">Start subscription</a>
+            <a class="button button--ghost" href="#source">了解來源</a>
+            <a class="button button--primary" href="mailto:hello@pasturechew.com">聯絡客服</a>
           </div>
         </nav>
 
         <section class="hero">
           <div class="hero__copy">
-            <span class="hero__eyebrow">Fresh for every tail</span>
-            <h1>Wholesome meals for dogs &amp; cats delivered with care.</h1>
+            <span class="hero__eyebrow">100% 天然放牧</span>
+            <h1>山羊角嚼勁，滿足毛孩的本能與健康。</h1>
             <p>
-              Merrimore Pet Provisions slow-cooks farm-fresh recipes in small
-              batches, balancing protein, superfoods, and gut-friendly probiotics
-              so every bowl supports a long, tail-wagging life.
+              牧野嚼樂山羊角精選蒙古高原與新疆草場放養山羊自然脫落的角，
+              經三重清潔、蒸氣殺菌與低溫風乾，保留膠原與礦物質，讓毛孩安心咀嚼。
+            </p>
+            <p>
+              純天然的耐咬口感可幫助清潔牙齒與牙齦，同時滿足狗狗天生的咀嚼欲望，
+              降低破壞性啃咬行為，為居家帶來更長久的平靜與陪伴。
             </p>
             <div class="hero__actions">
-              <a class="button button--primary" href="#shop">Shop best sellers</a>
-              <a class="button button--ghost" href="#nutrition">See our standards</a>
+              <a class="button button--primary" href="#shop">立即選購</a>
+              <a class="button button--ghost" href="#source">了解處理流程</a>
+            </div>
+            <div class="hero__stats">
+              <div class="stat-card">
+                <strong>100%</strong>
+                <span>採用放養山羊自然脫落的角，每支皆可追溯牧場來源。</span>
+              </div>
+              <div class="stat-card">
+                <strong>3 重淨化</strong>
+                <span>浸泡去雜質、專業刷洗與高溫蒸氣，確保衛生安全。</span>
+              </div>
+              <div class="stat-card">
+                <strong>0 添加</strong>
+                <span>不含人工香料、防腐劑與漂白劑，保留純淨原味。</span>
+              </div>
             </div>
           </div>
-          <figure class="hero__media">
-            <img
-              src="https://images.unsplash.com/photo-1546525848-3ce03ca516f6?auto=format&fit=crop&w=1200&q=80"
-              alt="Happy dog and cat sharing Merrimore pet food"
-            />
-            <figcaption>Happy companions enjoying Merrimore's freshly prepared meal set.</figcaption>
-          </figure>
-        </section>
-      </div>
-      <div class="summary-bar">
-        <div class="container">
-          <div class="summary-bar__inner" role="list">
-            <span class="summary-chip" role="listitem">100% 自然脫落來源</span>
-            <span class="summary-chip" role="listitem">三重清潔與蒸氣殺菌</span>
-            <span class="summary-chip" role="listitem">0 添加香料與防腐劑</span>
+          <div class="hero__media">
+            <div class="hero-gallery">
+              <figure class="hero-gallery__display">
+                <button
+                  type="button"
+                  class="hero-gallery__main"
+                  aria-label="放大檢視產品正面"
+                >
+                  <img
+                    class="hero-gallery__image"
+                    src="images/product-front.png"
+                    alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
+                  />
+                </button>
+                <figcaption class="hero-gallery__caption">
+                  正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。
+                </figcaption>
+              </figure>
+              <div class="hero-gallery__thumbnails" role="listbox" aria-label="切換產品視角">
+                <button
+                  type="button"
+                  class="hero-gallery__thumbnail is-active"
+                  role="option"
+                  aria-selected="true"
+                  data-image="images/product-front.png"
+                  data-alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
+                  data-caption="正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。"
+                  data-label="產品正面"
+                >
+                  <img src="images/product-front.png" alt="牧野嚼樂山羊角正面包裝縮圖" loading="lazy" />
+                </button>
+                <button
+                  type="button"
+                  class="hero-gallery__thumbnail"
+                  role="option"
+                  aria-selected="false"
+                  data-image="images/product-back.png"
+                  data-alt="牧野嚼樂山羊角背面包裝與成分標示。"
+                  data-caption="背面標示潔淨來源、營養成分與餵食指南，資訊一目瞭然。"
+                  data-label="產品背面"
+                >
+                  <img src="images/product-back.png" alt="牧野嚼樂山羊角背面包裝縮圖" loading="lazy" />
+                </button>
+                <button
+                  type="button"
+                  class="hero-gallery__thumbnail"
+                  role="option"
+                  aria-selected="false"
+                  data-image="images/product-horns.png"
+                  data-alt="牧野嚼樂精選山羊角的實拍特寫。"
+                  data-caption="低溫風乾保留天然紋理與膠原，厚實耐咬，提供毛孩滿足嚼勁。"
+                  data-label="產品細節"
+                >
+                  <img src="images/product-horns.png" alt="牧野嚼樂山羊角特寫縮圖" loading="lazy" />
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
     </header>
 
     <main>
       <section id="highlights" class="section section--light">
         <div class="container">
-          <h2 class="section-title">產品亮點 Product Highlights</h2>
-          <div class="section__intro">
+          <div class="section__heading">
+            <h2>為挑嘴又愛咬的毛孩打造的天然選擇。</h2>
             <p>
-              Our kitchens partner with veterinary nutritionists to craft balanced recipes
-              using transparent sourcing and whole ingredients that keep pets energized from
-              playtime to naptime.
-            </p>
-            <p>
-              Every box is slow-cooked, flash-frozen, and sealed for peak flavor so the meal
-              in your bowl tastes as if it just left our kettles.
+              我們以原色日出黃的環保包裝承載每一支山羊角，讓毛孩打開就聞得到自然草香。
+              從牧場到餐墊的每一步皆遵循食品級流程，讓飼主輕鬆為愛犬選擇更安心的咀嚼零食。
             </p>
           </div>
-          <div class="card-grid" role="list">
-            <article class="info-card" role="listitem">
-              <span class="info-card__icon" aria-hidden="true">🩺</span>
-              <h3>Veterinary Approved</h3>
-              <p>Board-certified experts balance protein, fats, and micronutrients for every life stage.</p>
+          <div class="features">
+            <article class="feature-card">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                <rect x="4" y="8" width="40" height="28" rx="14" stroke="#7fbf4c" stroke-width="2.5" />
+                <path d="M18 21l6 6 12-12" stroke="#7fbf4c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <h3>純淨無添加</h3>
+              <p>
+                無人工香料、色素與化學漂白，僅保留山羊角原始的膠原與微量元素，
+                讓敏感體質的毛孩也能安心享用。
+              </p>
             </article>
-            <article class="info-card" role="listitem">
-              <span class="info-card__icon" aria-hidden="true">❄️</span>
-              <h3>Slow Cooked &amp; Frozen</h3>
-              <p>Recipes are gently cooked, then frozen to preserve peak texture without preservatives.</p>
+            <article class="feature-card">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                <path
+                  d="M10 16c0-4.418 6.268-8 14-8s14 3.582 14 8-6.268 8-14 8-14 3.582-14 8 6.268 8 14 8 14-3.582 14-8"
+                  stroke="#7fbf4c"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path d="M24 8v32" stroke="#7fbf4c" stroke-width="2.5" stroke-linecap="round" />
+              </svg>
+              <h3>潔牙護齦同步</h3>
+              <p>
+                自然硬度可在咀嚼過程中摩擦牙齒，協助去除牙菌斑並按摩牙齦，
+                搭配獸醫建議的刷牙習慣，讓口腔維持清新健康。
+              </p>
             </article>
-            <article class="info-card" role="listitem">
-              <span class="info-card__icon" aria-hidden="true">🌿</span>
-              <h3>Sensitive-Tummy Safe</h3>
-              <p>Functional superfoods like pumpkin and chia nurture digestion and calm bellies.</p>
+            <article class="feature-card">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                <path
+                  d="M8 34c6-4 10-10 16-10s10 6 16 10"
+                  stroke="#7fbf4c"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <circle cx="16" cy="16" r="4" stroke="#7fbf4c" stroke-width="2.5" />
+                <circle cx="32" cy="16" r="4" stroke="#7fbf4c" stroke-width="2.5" />
+              </svg>
+              <h3>釋放咀嚼天性</h3>
+              <p>
+                長時間的嚼勁能滿足狗狗天生的啃咬需求，降低焦躁與破壞家具的行為，
+                也為居家獨處時光提供安心陪伴。
+              </p>
             </article>
           </div>
+          <ul class="pill-list" aria-label="產品重點">
+            <li class="pill">單一動物來源蛋白</li>
+            <li class="pill">低脂肪、耐咀嚼</li>
+            <li class="pill">全齡犬適用</li>
+            <li class="pill">通過第三方微生物檢驗</li>
+          </ul>
         </div>
       </section>
 
       <section id="shop" class="section">
         <div class="container">
-          <h2 class="section-title">規格選購 Signature Selection</h2>
-          <div class="section__intro">
+          <div class="section__heading">
+            <h2>選擇最適合毛孩口感的尺寸。</h2>
             <p>
-              Build a custom box with chef-crafted recipes, crunchy treats, and supplements tailored to
-              your pet's appetite and routine. Each option is portioned for easy serve-and-store days.
+              每支山羊角皆保留自然弧度與紋理，出貨前再次手工拋光並檢查銳角，
+              以便不同體型的狗狗都能安全抓握與啃咬。
             </p>
           </div>
           <div class="product-grid" role="list">
             <article class="product-card" role="listitem">
-              <figure>
-                <img
-                  src="https://images.unsplash.com/photo-1617896851807-0ecdbd1229d4?auto=format&fit=crop&w=800&q=80"
-                  alt="Bowl of Merrimore chicken and sweet potato meal"
-                />
-                <figcaption>Harvest Chicken &amp; Sweet Potato meal trays ready to serve.</figcaption>
-              </figure>
-              <h3>Harvest Chicken &amp; Sweet Potato</h3>
-              <p>Lean chicken, beta-carotene sweet potatoes, kale, and golden turmeric.</p>
-              <span class="price">$34 / 6-pack trays</span>
+              <img
+                src="https://images.unsplash.com/photo-1601758003122-58c0ae180d9b?auto=format&fit=crop&w=800&q=80"
+                alt="小型犬正在咀嚼迷你山羊角"
+              />
+              <h3>迷你角｜小型犬專用</h3>
+              <p>適合體重 5 公斤以下犬種，表面拋光更容易啃咬，初次嘗試亦推薦。</p>
+              <span class="price">NT$320 / 支</span>
             </article>
             <article class="product-card" role="listitem">
-              <figure>
-                <img
-                  src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=800&q=80"
-                  alt="Salmon meal toppers in a scoop"
-                />
-                <figcaption>Omega Salmon Topper adds glossy-coat nutrition to any bowl.</figcaption>
-              </figure>
-              <h3>Omega Salmon Topper</h3>
-              <p>Wild-caught salmon flakes, flaxseed, and kelp boosters for daily shine.</p>
-              <span class="price">$18 / 12 oz pouch</span>
+              <img
+                src="https://images.unsplash.com/photo-1558944351-cd118865250c?auto=format&fit=crop&w=800&q=80"
+                alt="中型犬與山羊角零食擺設"
+              />
+              <h3>經典角｜中型犬首選</h3>
+              <p>保留完整膠原層與天然骨髓香氣，適合體重 6–18 公斤的活力毛孩。</p>
+              <span class="price">NT$360 / 支</span>
             </article>
             <article class="product-card" role="listitem">
-              <figure>
-                <img
-                  src="https://images.unsplash.com/photo-1558944351-cd118865250c?auto=format&fit=crop&w=800&q=80"
-                  alt="Assortment of Merrimore freeze-dried treats"
-                />
-                <figcaption>Freeze-dried sampler featuring single-ingredient treats.</figcaption>
-              </figure>
-              <h3>Freeze-Dried Treat Variety</h3>
-              <p>Crisp beef liver, chicken heart, and apple slices for mindful rewards.</p>
-              <span class="price">$24 / 3-pack</span>
+              <img
+                src="https://images.unsplash.com/photo-1610465299991-3c0c064b2d30?auto=format&fit=crop&w=800&q=80"
+                alt="大型犬叼著完整山羊角"
+              />
+              <h3>勇士角｜大型犬耐咬</h3>
+              <p>厚實密度帶來更長時間的咀嚼樂趣，適合 20 公斤以上犬種。</p>
+              <span class="price">NT$420 / 支</span>
             </article>
             <article class="product-card" role="listitem">
-              <figure>
-                <img
-                  src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"
-                  alt="Probiotic supplement powder"
-                />
-                <figcaption>Daily Digestive Booster powder for sensitive stomachs.</figcaption>
-              </figure>
-              <h3>Daily Digestive Booster</h3>
-              <p>Prebiotic fiber, active probiotics, and chamomile for calm digestion.</p>
-              <span class="price">$22 / 60 servings</span>
+              <img
+                src="https://images.unsplash.com/photo-1619983081593-ec39c2100951?auto=format&fit=crop&w=800&q=80"
+                alt="山羊角禮盒包裝"
+              />
+              <h3>家庭分享盒</h3>
+              <p>含三種尺寸各一支，再加贈可重複密封的收藏袋，適合多犬家庭備用。</p>
+              <span class="price">NT$980 / 組</span>
             </article>
           </div>
         </div>
       </section>
 
-      <section id="process" class="section section--light">
+      <section id="source" class="section section--light">
         <div class="container">
-          <h2 class="section-title">了解流程 Our Care Process</h2>
-          <div class="section__intro">
-            <p>
-              From sourcing to delivery, we keep every step in-house for consistent quality. Each
-              shipment is packed in recyclable insulation with temperature trackers you can scan.
-            </p>
-          </div>
-          <div class="card-grid" role="list">
-            <article class="info-card" role="listitem">
-              <span class="info-card__icon" aria-hidden="true">1</span>
-              <h3>Sourcing &amp; Prep</h3>
-              <p>Locally raised proteins and seasonal produce arrive daily for immediate washing.</p>
-            </article>
-            <article class="info-card" role="listitem">
-              <span class="info-card__icon" aria-hidden="true">2</span>
-              <h3>Small-Batch Cooking</h3>
-              <p>Recipes simmer low and slow before rapid chilling locks in nutrients and texture.</p>
-            </article>
-            <article class="info-card" role="listitem">
-              <span class="info-card__icon" aria-hidden="true">3</span>
-              <h3>Cold-Chain Delivery</h3>
-              <p>Insulated boxes ship within 48 hours and arrive ready to store or thaw.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="nutrition" class="section">
-        <div class="container">
-          <h2 class="section-title">了解來源 Ingredient Transparency</h2>
           <div class="split">
-            <div class="reading-column">
-              <p>
-                We handle every order in our own temperature-controlled kitchen and cold chain so the
-                meals arriving at your door taste just as fresh as they did on the prep table.
-              </p>
+            <div>
+              <div class="section__heading">
+                <h2>嚴選產地與全程透明處理流程。</h2>
+                <p>
+                  山羊角來自通過人道放牧認證的合作牧場，僅採收自然脫落角體，
+                  並由具食品加工背景的團隊執行分類、清潔與消毒。每一批產品
+                  都留有批次編號，讓你隨時查詢檢驗報告與運輸紀錄。
+                </p>
+              </div>
               <ul class="badge-list">
                 <li class="badge-item">
                   <span class="badge-icon" aria-hidden="true">&#10003;</span>
-                  Individually portioned pouches reduce waste and overfeeding.
+                  以植物性溫和清潔液浸泡 12 小時，去除泥沙與雜質。
                 </li>
                 <li class="badge-item">
                   <span class="badge-icon" aria-hidden="true">&#10003;</span>
-                  Subscription pauses anytime—skip, swap flavors, or donate to a local rescue in one click.
+                  125°C 蒸氣殺菌 30 分鐘，再以低溫風乾鎖住膠原。
                 </li>
                 <li class="badge-item">
                   <span class="badge-icon" aria-hidden="true">&#10003;</span>
-                  Complimentary nutrition consults for new pet parents.
+                  真空包裝後送第三方實驗室檢驗，合格才上架出貨。
                 </li>
               </ul>
             </div>
             <figure class="hero__media">
               <img
-                src="https://images.unsplash.com/photo-1513105737059-ff0cf0580e0a?auto=format&fit=crop&w=1000&q=80"
-                alt="Chef portioning Merrimore pet meals"
+                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=80"
+                alt="放牧山羊在高原草地上悠閒覓食"
               />
-              <figcaption>Chef-led team portions Merrimore meals in a temperature-controlled kitchen.</figcaption>
             </figure>
           </div>
         </div>
       </section>
 
-      <section id="subscribe" class="section">
+      <section id="guide" class="section">
         <div class="container">
           <div class="subscription">
-            <h2 class="section-title">加入餐盒訂閱 Meal Club</h2>
-            <div class="section__intro">
-              <p>
-                Choose a plan that matches your pet's size and schedule. We'll prep, pack, and deliver
-                ready-to-serve meals on your cadence with flexible shipping windows.
-              </p>
-            </div>
+            <h2>安全享受山羊角的小祕訣。</h2>
+            <p>
+              初次提供時請於旁陪伴 10–15 分鐘，讓毛孩熟悉口感並避免吞食過大的碎片。
+              當山羊角咀嚼至小於 5 公分時，建議汰換並改以新角取代，以維持咀嚼安全。
+            </p>
             <div class="hero__actions">
-              <a class="button button--primary" href="#shop">Build your box</a>
-              <a class="button button--ghost" href="mailto:care@merrimore.com">Chat with nutrition</a>
+              <a class="button button--primary" href="#shop">挑選合適尺寸</a>
+              <a class="button button--ghost" href="mailto:care@pasturechew.com">詢問營養師</a>
             </div>
             <ul class="pill-list">
-              <li class="pill">Free two-day shipping</li>
-              <li class="pill">Auto-ship savings up to 15%</li>
-              <li class="pill">Picky eater guarantee</li>
+              <li class="pill">建議每週 2–3 次，每次 20 分鐘</li>
+              <li class="pill">搭配足量飲水，補充水分</li>
+              <li class="pill">避免給予 3 個月以下幼犬</li>
+              <li class="pill">收藏於陰涼乾燥處，遠離陽光</li>
             </ul>
           </div>
         </div>
@@ -249,124 +305,359 @@
 
       <section id="stories" class="section section--light">
         <div class="container">
-          <h2 class="section-title">真實回饋 Community Stories</h2>
-          <div class="section__intro">
+          <div class="section__heading">
+            <h2>毛爸媽的真心好評。</h2>
             <p>
-              From energy levels to digestion, Merrimore families share the wins they notice after switching
-              to our recipes.
+              牧野嚼樂陪伴不同年齡與體型的毛孩，共同建立健康的咀嚼習慣與口腔保養。
             </p>
           </div>
           <div class="testimonials">
             <article class="testimonial">
               <p>
-                “Within two weeks of Merrimore, Luna stopped skipping meals and
-                her coat is the glossiest it's ever been. The delivery packaging is
-                also fully recyclable—huge win.”
+                「拉拉第一次接觸山羊角就愛上，耐咬度讓她安靜地待在床上，牙垢也明顯變少。」
               </p>
-              <cite>Rita &amp; Luna the Aussie</cite>
+              <cite>庭安 &amp; 拉拉（4 歲米克斯）</cite>
             </article>
             <article class="testimonial">
               <p>
-                “My senior cat Miso has a sensitive stomach, but the digestive
-                booster keeps her balanced. She literally sprints to the bowl now.”
+                「我們家柯基腸胃敏感，這款沒有人工添加物，吃完也不會拉肚子，真的超安心。」
               </p>
-              <cite>Jon &amp; Miso</cite>
+              <cite>Hank &amp; Pudding（6 歲柯基）</cite>
             </article>
             <article class="testimonial">
               <p>
-                “Having the ability to pause or donate a shipment when we're
-                traveling made this the easiest subscription we've tried.”
+                「家庭分享盒一次滿足三隻狗狗，不用擔心搶同一支，宅配到府很方便。」
               </p>
-              <cite>The Walker Pack</cite>
+              <cite>林家毛孩小隊</cite>
             </article>
           </div>
         </div>
       </section>
 
-      <section id="community" class="section">
+      <section id="faq" class="section">
         <div class="container">
-          <h2 class="section-title">社群資源 Community Bowls</h2>
-          <div class="section__intro">
+          <div class="section__heading">
+            <h2>常見問題與專家建議。</h2>
             <p>
-              Explore ideas for enrichment, training, and seasonal recipes from our Merrimore pack leaders.
+              若有更多疑問，歡迎隨時寫信或在社群私訊我們的營養師團隊，
+              我們將提供最貼近毛孩需求的建議。
             </p>
           </div>
           <div class="community">
             <article class="community-card">
-              <time datetime="2024-03-18">Mar 18, 2024</time>
-              <h3>Spring bowls for allergy-prone pups</h3>
+              <time datetime="2024-03-18">Q1</time>
+              <h3>山羊角適合幾歲以上的狗狗？</h3>
               <p>
-                Learn how we rotate novel proteins and add anti-inflammatory
-                boosters when pollen levels spike.
+                建議 4 個月以上、已長齊乳牙的幼犬或成犬使用。若牙口較弱，
+                可先從迷你角或較薄的款式開始，並縮短咀嚼時間。
               </p>
-              <a class="button button--ghost" href="#subscribe">Read &amp; shop</a>
+              <a class="button button--ghost" href="mailto:care@pasturechew.com">諮詢更多</a>
             </article>
             <article class="community-card">
-              <time datetime="2024-02-02">Feb 2, 2024</time>
-              <h3>DIY lick mats with Merrimore toppers</h3>
+              <time datetime="2024-02-02">Q2</time>
+              <h3>如果狗狗咬出碎屑怎麼辦？</h3>
               <p>
-                Keep curious noses busy with enrichment ideas featuring our
-                omega-packed toppers.
-              </p>
-              <a class="button button--ghost" href="#shop">Get the recipe</a>
+                請立即收回碎屑並更換新角，避免吞食過小的碎塊。咀嚼過程中
+                建議家長在旁觀察，適時提醒毛孩慢慢咬。</p>
+              <a class="button button--ghost" href="#guide">查看使用指南</a>
             </article>
             <article class="community-card">
-              <time datetime="2024-01-12">Jan 12, 2024</time>
-              <h3>Partnering with local rescues</h3>
+              <time datetime="2024-01-12">Q3</time>
+              <h3>開封後可以保存多久？</h3>
               <p>
-                See how donated boxes support adoption events and foster
-                families in our hometowns.
-              </p>
-              <a class="button button--ghost" href="mailto:partners@merrimore.com">Volunteer with us</a>
+                建議置於原裝夾鏈袋或密封罐中，放在陰涼處即可保存 12 個月。
+                若環境潮濕，可放入乾燥劑並定期日照通風 1 小時。</p>
+              <a class="button button--ghost" href="#source">了解來源</a>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section section--light">
+      <section id="visit" class="section section--light">
         <div class="container">
           <div class="split">
             <div>
-              <h2 class="section-title">到門市走走 Visit Merrimore Market</h2>
-              <div class="section__intro">
-                <p>
-                  Stop by Merrimore Market for same-day pick up, custom treat bars, and fittings for collars,
-                  beds, and wellness essentials.
-                </p>
-              </div>
+              <h2>歡迎蒞臨牧野嚼樂期間限定店。</h2>
+              <p>
+                親自感受山羊角的自然香氣，體驗手作打磨示範，並現場諮詢營養師。
+                現場購買可享免費刻字服務，為毛孩打造專屬咀嚼角。
+              </p>
               <div class="hero__actions">
-                <a class="button button--primary" href="https://maps.google.com" target="_blank" rel="noopener">
-                  Plan your visit
-                </a>
-                <a class="button button--ghost" href="tel:+18885551212">Call (888) 555-1212</a>
+                <a class="button button--primary" href="https://maps.google.com" target="_blank" rel="noopener">規劃路線</a>
+                <a class="button button--ghost" href="tel:+886223456789">客服專線 (02) 2345-6789</a>
               </div>
             </div>
             <figure class="hero__media">
               <img
                 src="https://images.unsplash.com/photo-1620744738794-a4c4edfb883c?auto=format&fit=crop&w=1000&q=80"
-                alt="Merrimore retail market with pet products"
+                alt="期間限定店展示山羊角與天然咀嚼零食"
               />
-              <figcaption>Merrimore Market stocks fresh meals, gear, and seasonal wellness picks.</figcaption>
             </figure>
           </div>
         </div>
       </section>
     </main>
 
+    <div
+      class="lightbox"
+      id="image-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <div class="lightbox__content" role="document">
+        <button type="button" class="lightbox__close" aria-label="關閉圖片" data-lightbox-close>&times;</button>
+        <img class="lightbox__image" src="" alt="" />
+        <p class="lightbox__caption"></p>
+      </div>
+    </div>
+
     <footer class="footer">
       <div class="container">
         <div class="footer__inner">
-          <p>&copy; <span id="year"></span> Merrimore Pet Provisions. All rights reserved.</p>
-          <a href="mailto:care@merrimore.com">care@merrimore.com</a>
+          <p>&copy; <span id="year"></span> 牧野嚼樂 Pasture Chew. 版權所有。</p>
+          <a href="mailto:hello@pasturechew.com">hello@pasturechew.com</a>
         </div>
       </div>
     </footer>
 
     <script>
-      const yearEl = document.getElementById('year');
-      if (yearEl) {
-        yearEl.textContent = new Date().getFullYear();
-      }
+      (() => {
+        const yearEl = document.getElementById('year');
+        if (yearEl) {
+          yearEl.textContent = new Date().getFullYear();
+        }
+
+        const heroGallery = document.querySelector('.hero-gallery');
+        if (heroGallery) {
+          const mainButton = heroGallery.querySelector('.hero-gallery__main');
+          const mainImage = heroGallery.querySelector('.hero-gallery__image');
+          const mainCaption = heroGallery.querySelector('.hero-gallery__caption');
+          const thumbnails = Array.from(heroGallery.querySelectorAll('.hero-gallery__thumbnail'));
+
+          function setActiveHeroThumbnail(target) {
+            thumbnails.forEach((thumb) => {
+              const isActive = thumb === target;
+              thumb.classList.toggle('is-active', isActive);
+              thumb.setAttribute('aria-selected', isActive ? 'true' : 'false');
+              thumb.tabIndex = isActive ? 0 : -1;
+            });
+          }
+
+          function updateHeroGallery(thumbnail) {
+            if (!thumbnail || !mainImage) {
+              return;
+            }
+
+            const newSrc = thumbnail.dataset.image;
+            if (newSrc && mainImage.getAttribute('src') !== newSrc) {
+              mainImage.setAttribute('src', newSrc);
+            }
+
+            const newAlt = thumbnail.dataset.alt || '';
+            mainImage.alt = newAlt;
+
+            if (mainCaption) {
+              mainCaption.textContent = thumbnail.dataset.caption || '';
+            }
+
+            if (mainButton) {
+              const labelText = thumbnail.dataset.label || newAlt || '產品圖片';
+              mainButton.setAttribute('aria-label', `放大檢視${labelText}`);
+            }
+
+            setActiveHeroThumbnail(thumbnail);
+          }
+
+          thumbnails.forEach((thumbnail) => {
+            const labelText = thumbnail.dataset.label || thumbnail.dataset.caption || thumbnail.dataset.alt;
+            if (labelText) {
+              thumbnail.setAttribute('aria-label', labelText);
+            }
+
+            thumbnail.addEventListener('click', () => updateHeroGallery(thumbnail));
+
+            thumbnail.addEventListener('keydown', (event) => {
+              if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                return;
+              }
+
+              event.preventDefault();
+              const currentIndex = thumbnails.indexOf(thumbnail);
+              if (currentIndex === -1) {
+                return;
+              }
+
+              const offset = event.key === 'ArrowLeft' ? -1 : 1;
+              const nextIndex = (currentIndex + offset + thumbnails.length) % thumbnails.length;
+              const nextThumbnail = thumbnails[nextIndex];
+
+              if (nextThumbnail) {
+                nextThumbnail.focus();
+                nextThumbnail.click();
+              }
+            });
+          });
+
+          const activeHeroThumbnail = thumbnails.find(
+            (thumb) => thumb.classList.contains('is-active') || thumb.getAttribute('aria-selected') === 'true',
+          );
+
+          if (activeHeroThumbnail) {
+            updateHeroGallery(activeHeroThumbnail);
+          }
+        }
+
+        const gallery = document.querySelector('.product-gallery');
+        if (gallery) {
+          const displayImage = gallery.querySelector('.product-gallery__zoom img');
+          const displayCaption = gallery.querySelector('.product-gallery__caption');
+          const thumbnails = Array.from(gallery.querySelectorAll('.product-gallery__thumbnail'));
+
+          function setActiveThumbnail(target) {
+            thumbnails.forEach((thumb) => {
+              const isActive = thumb === target;
+              thumb.classList.toggle('is-active', isActive);
+              thumb.setAttribute('aria-selected', isActive ? 'true' : 'false');
+              thumb.tabIndex = isActive ? 0 : -1;
+            });
+          }
+
+          function updateDisplayFromThumbnail(thumbnail) {
+            if (!displayImage) {
+              return;
+            }
+
+            const newSrc = thumbnail.dataset.image;
+            if (newSrc && displayImage.getAttribute('src') !== newSrc) {
+              displayImage.setAttribute('src', newSrc);
+            }
+
+            const newAlt = thumbnail.dataset.alt;
+            if (typeof newAlt === 'string') {
+              displayImage.alt = newAlt;
+            }
+
+            if (displayCaption) {
+              const newCaption = thumbnail.dataset.caption || '';
+              displayCaption.textContent = newCaption;
+            }
+
+            setActiveThumbnail(thumbnail);
+          }
+
+          thumbnails.forEach((thumbnail) => {
+            thumbnail.addEventListener('click', () => updateDisplayFromThumbnail(thumbnail));
+
+            thumbnail.addEventListener('keydown', (event) => {
+              if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                return;
+              }
+
+              event.preventDefault();
+              const currentIndex = thumbnails.indexOf(thumbnail);
+              if (currentIndex === -1) {
+                return;
+              }
+
+              const offset = event.key === 'ArrowLeft' ? -1 : 1;
+              const nextIndex = (currentIndex + offset + thumbnails.length) % thumbnails.length;
+              const nextThumbnail = thumbnails[nextIndex];
+
+              if (nextThumbnail) {
+                nextThumbnail.focus();
+                nextThumbnail.click();
+              }
+            });
+          });
+
+          const activeThumbnail = thumbnails.find(
+            (thumb) => thumb.classList.contains('is-active') || thumb.getAttribute('aria-selected') === 'true',
+          );
+
+          if (activeThumbnail) {
+            updateDisplayFromThumbnail(activeThumbnail);
+          }
+        }
+
+        const lightbox = document.getElementById('image-lightbox');
+        if (!lightbox) {
+          return;
+        }
+
+        const lightboxImage = lightbox.querySelector('.lightbox__image');
+        const lightboxCaption = lightbox.querySelector('.lightbox__caption');
+        const closeTriggers = lightbox.querySelectorAll('[data-lightbox-close]');
+        let lastFocusedElement = null;
+
+        function openLightbox(trigger) {
+          const img = trigger.querySelector('img');
+          if (!img || !lightboxImage) {
+            return;
+          }
+
+          const figure = trigger.closest('figure');
+          const captionEl = figure ? figure.querySelector('figcaption') : null;
+
+          lightboxImage.src = img.currentSrc || img.src;
+          lightboxImage.alt = img.alt || '';
+
+          if (lightboxCaption) {
+            lightboxCaption.textContent = captionEl ? captionEl.textContent : '';
+          }
+
+          lightbox.classList.add('lightbox--open');
+          lightbox.removeAttribute('aria-hidden');
+          document.body.classList.add('lightbox-open');
+
+          lastFocusedElement = document.activeElement;
+          const closeButton = lightbox.querySelector('.lightbox__close');
+          if (closeButton) {
+            closeButton.focus();
+          }
+        }
+
+        function closeLightbox() {
+          if (lightboxImage) {
+            lightboxImage.src = '';
+            lightboxImage.alt = '';
+          }
+
+          if (lightboxCaption) {
+            lightboxCaption.textContent = '';
+          }
+
+          lightbox.classList.remove('lightbox--open');
+          lightbox.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('lightbox-open');
+
+          if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+            lastFocusedElement.focus();
+          }
+          lastFocusedElement = null;
+        }
+
+        document.querySelectorAll('.product-gallery__zoom, .hero-gallery__main').forEach((button) => {
+          button.addEventListener('click', () => openLightbox(button));
+        });
+
+        closeTriggers.forEach((trigger) => {
+          trigger.addEventListener('click', closeLightbox);
+        });
+
+        lightbox.addEventListener('click', (event) => {
+          if (event.target === lightbox) {
+            closeLightbox();
+          }
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && lightbox.classList.contains('lightbox--open')) {
+            closeLightbox();
+          }
+        });
+      })();
     </script>
   </body>
 </html>
