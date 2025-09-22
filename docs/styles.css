@@ -271,7 +271,7 @@ img {
 }
 
 .hero-gallery__image {
-  width: min(100%, 320px);
+  width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: contain;
   border-radius: calc(var(--radius-medium) - 4px);
