@@ -321,12 +321,39 @@ img {
   background: #ffffff;
 }
 
+ codex/modify-image-display-for-zoom-feature-ltapmj
+=======
+.product-gallery__zoom {
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--radius-small);
+  display: block;
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.product-gallery__zoom:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(127, 191, 76, 0.35);
+}
+
+ main
 .product-gallery__zoom:hover img,
 .product-gallery__zoom:focus-visible img {
   transform: scale(1.02);
 }
 
+ codex/modify-image-display-for-zoom-feature-ltapmj
 .product-gallery__caption {
+
+.product-gallery__zoom img {
+  transition: transform 220ms ease;
+}
+
+.product-gallery__item figcaption {
+ main
   margin: 0;
   color: var(--color-muted);
   font-size: 1.02rem;
