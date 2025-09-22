@@ -65,23 +65,63 @@
               </div>
             </div>
           </div>
-          <div class="hero__media" aria-hidden="true">
-            <div class="packaging-shadow"></div>
-            <figure class="packaging-mockup">
-              <span class="packaging-mockup__logo">牧野嚼樂</span>
-              <span class="packaging-mockup__badge">山羊角系列</span>
-              <div class="packaging-mockup__product">天然咀嚼角</div>
-              <ul class="packaging-mockup__notes">
-                <li>放養山羊自然脫角</li>
-                <li>全程專業消毒</li>
-                <li>高膠原耐咀嚼</li>
-              </ul>
-              <div class="packaging-mockup__scene"></div>
-              <div class="packaging-mockup__horns">
-                <span></span>
-                <span></span>
+          <div class="hero__media">
+            <div class="hero-gallery">
+              <figure class="hero-gallery__display">
+                <button
+                  type="button"
+                  class="hero-gallery__main"
+                  aria-label="放大檢視產品正面"
+                >
+                  <img
+                    class="hero-gallery__image"
+                    src="docs/images/product-front.png"
+                    alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
+                  />
+                </button>
+                <figcaption class="hero-gallery__caption">
+                  正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。
+                </figcaption>
+              </figure>
+              <div class="hero-gallery__thumbnails" role="listbox" aria-label="切換產品視角">
+                <button
+                  type="button"
+                  class="hero-gallery__thumbnail is-active"
+                  role="option"
+                  aria-selected="true"
+                  data-image="docs/images/product-front.png"
+                  data-alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
+                  data-caption="正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。"
+                  data-label="產品正面"
+                >
+                  <img src="docs/images/product-front.png" alt="牧野嚼樂山羊角正面包裝縮圖" loading="lazy" />
+                </button>
+                <button
+                  type="button"
+                  class="hero-gallery__thumbnail"
+                  role="option"
+                  aria-selected="false"
+                  data-image="docs/images/product-back.png"
+                  data-alt="牧野嚼樂山羊角背面包裝與成分標示。"
+                  data-caption="背面標示潔淨來源、營養成分與餵食指南，資訊一目瞭然。"
+                  data-label="產品背面"
+                >
+                  <img src="docs/images/product-back.png" alt="牧野嚼樂山羊角背面包裝縮圖" loading="lazy" />
+                </button>
+                <button
+                  type="button"
+                  class="hero-gallery__thumbnail"
+                  role="option"
+                  aria-selected="false"
+                  data-image="docs/images/product-horns.png"
+                  data-alt="牧野嚼樂精選山羊角的實拍特寫。"
+                  data-caption="低溫風乾保留天然紋理與膠原，厚實耐咬，提供毛孩滿足嚼勁。"
+                  data-label="產品細節"
+                >
+                  <img src="docs/images/product-horns.png" alt="牧野嚼樂山羊角特寫縮圖" loading="lazy" />
+                </button>
               </div>
-            </figure>
+            </div>
           </div>
         </section>
       </div>
@@ -503,6 +543,86 @@
           yearEl.textContent = new Date().getFullYear();
         }
 
+        const heroGallery = document.querySelector('.hero-gallery');
+        if (heroGallery) {
+          const mainButton = heroGallery.querySelector('.hero-gallery__main');
+          const mainImage = heroGallery.querySelector('.hero-gallery__image');
+          const mainCaption = heroGallery.querySelector('.hero-gallery__caption');
+          const thumbnails = Array.from(heroGallery.querySelectorAll('.hero-gallery__thumbnail'));
+
+          function setActiveHeroThumbnail(target) {
+            thumbnails.forEach((thumb) => {
+              const isActive = thumb === target;
+              thumb.classList.toggle('is-active', isActive);
+              thumb.setAttribute('aria-selected', isActive ? 'true' : 'false');
+              thumb.tabIndex = isActive ? 0 : -1;
+            });
+          }
+
+          function updateHeroGallery(thumbnail) {
+            if (!thumbnail || !mainImage) {
+              return;
+            }
+
+            const newSrc = thumbnail.dataset.image;
+            if (newSrc && mainImage.getAttribute('src') !== newSrc) {
+              mainImage.setAttribute('src', newSrc);
+            }
+
+            const newAlt = thumbnail.dataset.alt || '';
+            mainImage.alt = newAlt;
+
+            if (mainCaption) {
+              mainCaption.textContent = thumbnail.dataset.caption || '';
+            }
+
+            if (mainButton) {
+              const labelText = thumbnail.dataset.label || newAlt || '產品圖片';
+              mainButton.setAttribute('aria-label', `放大檢視${labelText}`);
+            }
+
+            setActiveHeroThumbnail(thumbnail);
+          }
+
+          thumbnails.forEach((thumbnail) => {
+            const labelText = thumbnail.dataset.label || thumbnail.dataset.caption || thumbnail.dataset.alt;
+            if (labelText) {
+              thumbnail.setAttribute('aria-label', labelText);
+            }
+
+            thumbnail.addEventListener('click', () => updateHeroGallery(thumbnail));
+
+            thumbnail.addEventListener('keydown', (event) => {
+              if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                return;
+              }
+
+              event.preventDefault();
+              const currentIndex = thumbnails.indexOf(thumbnail);
+              if (currentIndex === -1) {
+                return;
+              }
+
+              const offset = event.key === 'ArrowLeft' ? -1 : 1;
+              const nextIndex = (currentIndex + offset + thumbnails.length) % thumbnails.length;
+              const nextThumbnail = thumbnails[nextIndex];
+
+              if (nextThumbnail) {
+                nextThumbnail.focus();
+                nextThumbnail.click();
+              }
+            });
+          });
+
+          const activeHeroThumbnail = thumbnails.find(
+            (thumb) => thumb.classList.contains('is-active') || thumb.getAttribute('aria-selected') === 'true',
+          );
+
+          if (activeHeroThumbnail) {
+            updateHeroGallery(activeHeroThumbnail);
+          }
+        }
+
         const gallery = document.querySelector('.product-gallery');
         if (gallery) {
           const displayImage = gallery.querySelector('.product-gallery__zoom img');
@@ -632,7 +752,7 @@
           lastFocusedElement = null;
         }
 
-        document.querySelectorAll('.product-gallery__zoom').forEach((button) => {
+        document.querySelectorAll('.product-gallery__zoom, .hero-gallery__main').forEach((button) => {
           button.addEventListener('click', () => openLightbox(button));
         });
 
