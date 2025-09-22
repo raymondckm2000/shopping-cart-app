@@ -18,7 +18,7 @@
         <nav class="nav" aria-label="Primary">
           <a class="brand" href="#top">Merrimore</a>
           <ul class="nav__links">
-            <li><a href="#promise">Our Promise</a></li>
+            <li><a href="#highlights">Our Promise</a></li>
             <li><a href="#shop">Shop</a></li>
             <li><a href="#nutrition">Nutrition</a></li>
             <li><a href="#community">Community</a></li>
@@ -42,161 +42,162 @@
               <a class="button button--primary" href="#shop">Shop best sellers</a>
               <a class="button button--ghost" href="#nutrition">See our standards</a>
             </div>
-            <div class="hero__stats">
-              <div class="stat-card">
-                <strong>72%</strong>
-                <span>of Merrimore pets show shinier coats within 30 days.</span>
-              </div>
-              <div class="stat-card">
-                <strong>48 hrs</strong>
-                <span>from kitchen to doorstep with insulated, eco-friendly packaging.</span>
-              </div>
-              <div class="stat-card">
-                <strong>100%</strong>
-                <span>recyclable containers and carbon-neutral deliveries.</span>
-              </div>
-            </div>
           </div>
-          <div class="hero__media" aria-hidden="true">
+          <figure class="hero__media">
             <img
               src="https://images.unsplash.com/photo-1546525848-3ce03ca516f6?auto=format&fit=crop&w=1200&q=80"
               alt="Happy dog and cat sharing Merrimore pet food"
             />
-          </div>
+            <figcaption>Happy companions enjoying Merrimore's freshly prepared meal set.</figcaption>
+          </figure>
         </section>
+      </div>
+      <div class="summary-bar">
+        <div class="container">
+          <div class="summary-bar__inner" role="list">
+            <span class="summary-chip" role="listitem">100% 自然脫落來源</span>
+            <span class="summary-chip" role="listitem">三重清潔與蒸氣殺菌</span>
+            <span class="summary-chip" role="listitem">0 添加香料與防腐劑</span>
+          </div>
+        </div>
       </div>
     </header>
 
     <main>
-      <section id="promise" class="section section--light">
+      <section id="highlights" class="section section--light">
         <div class="container">
-          <div class="section__heading">
-            <h2>Food they crave, nutrition you can trust.</h2>
+          <h2 class="section-title">產品亮點 Product Highlights</h2>
+          <div class="section__intro">
             <p>
-              Our kitchens partner with veterinary nutritionists to craft balanced
-              recipes using transparent sourcing and whole ingredients that keep
-              pets energized from playtime to naptime.
+              Our kitchens partner with veterinary nutritionists to craft balanced recipes
+              using transparent sourcing and whole ingredients that keep pets energized from
+              playtime to naptime.
+            </p>
+            <p>
+              Every box is slow-cooked, flash-frozen, and sealed for peak flavor so the meal
+              in your bowl tastes as if it just left our kettles.
             </p>
           </div>
-          <div class="features">
-            <article class="feature-card">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                <rect x="4" y="8" width="40" height="28" rx="14" stroke="#f26a2e" stroke-width="2.5" />
-                <path d="M18 21l6 6 12-12" stroke="#f26a2e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <h3>Veterinary approved</h3>
-              <p>
-                Board-certified nutritionists review every recipe to ensure
-                balanced protein, fats, and micronutrients for all life stages.
-              </p>
+          <div class="card-grid" role="list">
+            <article class="info-card" role="listitem">
+              <span class="info-card__icon" aria-hidden="true">🩺</span>
+              <h3>Veterinary Approved</h3>
+              <p>Board-certified experts balance protein, fats, and micronutrients for every life stage.</p>
             </article>
-            <article class="feature-card">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                <path
-                  d="M10 16c0-4.418 6.268-8 14-8s14 3.582 14 8-6.268 8-14 8-14 3.582-14 8 6.268 8 14 8 14-3.582 14-8"
-                  stroke="#f26a2e"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path d="M24 8v32" stroke="#f26a2e" stroke-width="2.5" stroke-linecap="round" />
-              </svg>
-              <h3>Slow cooked &amp; frozen</h3>
-              <p>
-                Gently prepared to lock in taste and texture, then frozen fresh to
-                preserve nutrients without preservatives.
-              </p>
+            <article class="info-card" role="listitem">
+              <span class="info-card__icon" aria-hidden="true">❄️</span>
+              <h3>Slow Cooked &amp; Frozen</h3>
+              <p>Recipes are gently cooked, then frozen to preserve peak texture without preservatives.</p>
             </article>
-            <article class="feature-card">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                <path
-                  d="M8 34c6-4 10-10 16-10s10 6 16 10"
-                  stroke="#f26a2e"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <circle cx="16" cy="16" r="4" stroke="#f26a2e" stroke-width="2.5" />
-                <circle cx="32" cy="16" r="4" stroke="#f26a2e" stroke-width="2.5" />
-              </svg>
-              <h3>Made for sensitive tummies</h3>
-              <p>
-                Functional superfoods like pumpkin, turmeric, and chia support
-                digestion and happy bellies.
-              </p>
+            <article class="info-card" role="listitem">
+              <span class="info-card__icon" aria-hidden="true">🌿</span>
+              <h3>Sensitive-Tummy Safe</h3>
+              <p>Functional superfoods like pumpkin and chia nurture digestion and calm bellies.</p>
             </article>
           </div>
-          <ul class="pill-list" aria-label="Recipe highlights">
-            <li class="pill">Human-grade meats</li>
-            <li class="pill">Seasonal vegetables</li>
-            <li class="pill">No fillers or dyes</li>
-            <li class="pill">AAFCO-compliant</li>
-          </ul>
         </div>
       </section>
 
       <section id="shop" class="section">
         <div class="container">
-          <div class="section__heading">
-            <h2>Best sellers loved by discerning pets.</h2>
+          <h2 class="section-title">規格選購 Signature Selection</h2>
+          <div class="section__intro">
             <p>
-              Build a custom box with chef-crafted recipes, crunchy treats, and
-              supplements tailored to your pet's needs.
+              Build a custom box with chef-crafted recipes, crunchy treats, and supplements tailored to
+              your pet's appetite and routine. Each option is portioned for easy serve-and-store days.
             </p>
           </div>
           <div class="product-grid" role="list">
             <article class="product-card" role="listitem">
-              <img
-                src="https://images.unsplash.com/photo-1617896851807-0ecdbd1229d4?auto=format&fit=crop&w=800&q=80"
-                alt="Bowl of Merrimore chicken and sweet potato meal"
-              />
+              <figure>
+                <img
+                  src="https://images.unsplash.com/photo-1617896851807-0ecdbd1229d4?auto=format&fit=crop&w=800&q=80"
+                  alt="Bowl of Merrimore chicken and sweet potato meal"
+                />
+                <figcaption>Harvest Chicken &amp; Sweet Potato meal trays ready to serve.</figcaption>
+              </figure>
               <h3>Harvest Chicken &amp; Sweet Potato</h3>
-              <p>Lean chicken, beta-carotene rich sweet potatoes, and kale.</p>
+              <p>Lean chicken, beta-carotene sweet potatoes, kale, and golden turmeric.</p>
               <span class="price">$34 / 6-pack trays</span>
             </article>
             <article class="product-card" role="listitem">
-              <img
-                src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=800&q=80"
-                alt="Salmon meal toppers in a scoop"
-              />
+              <figure>
+                <img
+                  src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=800&q=80"
+                  alt="Salmon meal toppers in a scoop"
+                />
+                <figcaption>Omega Salmon Topper adds glossy-coat nutrition to any bowl.</figcaption>
+              </figure>
               <h3>Omega Salmon Topper</h3>
-              <p>Wild-caught salmon flakes with flaxseed and kelp boosters.</p>
+              <p>Wild-caught salmon flakes, flaxseed, and kelp boosters for daily shine.</p>
               <span class="price">$18 / 12 oz pouch</span>
             </article>
             <article class="product-card" role="listitem">
-              <img
-                src="https://images.unsplash.com/photo-1558944351-cd118865250c?auto=format&fit=crop&w=800&q=80"
-                alt="Assortment of Merrimore freeze-dried treats"
-              />
+              <figure>
+                <img
+                  src="https://images.unsplash.com/photo-1558944351-cd118865250c?auto=format&fit=crop&w=800&q=80"
+                  alt="Assortment of Merrimore freeze-dried treats"
+                />
+                <figcaption>Freeze-dried sampler featuring single-ingredient treats.</figcaption>
+              </figure>
               <h3>Freeze-Dried Treat Variety</h3>
-              <p>Crisp bites of beef liver, chicken heart, and apple slices.</p>
+              <p>Crisp beef liver, chicken heart, and apple slices for mindful rewards.</p>
               <span class="price">$24 / 3-pack</span>
             </article>
             <article class="product-card" role="listitem">
-              <img
-                src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"
-                alt="Probiotic supplement powder"
-              />
+              <figure>
+                <img
+                  src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"
+                  alt="Probiotic supplement powder"
+                />
+                <figcaption>Daily Digestive Booster powder for sensitive stomachs.</figcaption>
+              </figure>
               <h3>Daily Digestive Booster</h3>
-              <p>Probiotics, prebiotic fiber, and chamomile for calm stomachs.</p>
+              <p>Prebiotic fiber, active probiotics, and chamomile for calm digestion.</p>
               <span class="price">$22 / 60 servings</span>
             </article>
           </div>
         </div>
       </section>
 
-      <section id="nutrition" class="section section--light">
+      <section id="process" class="section section--light">
         <div class="container">
+          <h2 class="section-title">了解流程 Our Care Process</h2>
+          <div class="section__intro">
+            <p>
+              From sourcing to delivery, we keep every step in-house for consistent quality. Each
+              shipment is packed in recyclable insulation with temperature trackers you can scan.
+            </p>
+          </div>
+          <div class="card-grid" role="list">
+            <article class="info-card" role="listitem">
+              <span class="info-card__icon" aria-hidden="true">1</span>
+              <h3>Sourcing &amp; Prep</h3>
+              <p>Locally raised proteins and seasonal produce arrive daily for immediate washing.</p>
+            </article>
+            <article class="info-card" role="listitem">
+              <span class="info-card__icon" aria-hidden="true">2</span>
+              <h3>Small-Batch Cooking</h3>
+              <p>Recipes simmer low and slow before rapid chilling locks in nutrients and texture.</p>
+            </article>
+            <article class="info-card" role="listitem">
+              <span class="info-card__icon" aria-hidden="true">3</span>
+              <h3>Cold-Chain Delivery</h3>
+              <p>Insulated boxes ship within 48 hours and arrive ready to store or thaw.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="nutrition" class="section">
+        <div class="container">
+          <h2 class="section-title">了解來源 Ingredient Transparency</h2>
           <div class="split">
-            <div>
-              <div class="section__heading">
-                <h2>The Merrimore standard of care.</h2>
-                <p>
-                  We handle every order in our own temperature-controlled kitchen
-                  and cold chain, so the meals arriving at your door taste just as
-                  fresh as they did on the prep table.
-                </p>
-              </div>
+            <div class="reading-column">
+              <p>
+                We handle every order in our own temperature-controlled kitchen and cold chain so the
+                meals arriving at your door taste just as fresh as they did on the prep table.
+              </p>
               <ul class="badge-list">
                 <li class="badge-item">
                   <span class="badge-icon" aria-hidden="true">&#10003;</span>
@@ -204,8 +205,7 @@
                 </li>
                 <li class="badge-item">
                   <span class="badge-icon" aria-hidden="true">&#10003;</span>
-                  Subscription pauses anytime—skip, swap flavors, or donate to a
-                  local rescue in one click.
+                  Subscription pauses anytime—skip, swap flavors, or donate to a local rescue in one click.
                 </li>
                 <li class="badge-item">
                   <span class="badge-icon" aria-hidden="true">&#10003;</span>
@@ -218,6 +218,7 @@
                 src="https://images.unsplash.com/photo-1513105737059-ff0cf0580e0a?auto=format&fit=crop&w=1000&q=80"
                 alt="Chef portioning Merrimore pet meals"
               />
+              <figcaption>Chef-led team portions Merrimore meals in a temperature-controlled kitchen.</figcaption>
             </figure>
           </div>
         </div>
@@ -226,12 +227,13 @@
       <section id="subscribe" class="section">
         <div class="container">
           <div class="subscription">
-            <h2>Join the Merrimore Meal Club.</h2>
-            <p>
-              Choose a plan that matches your pet's size and schedule. We'll prep,
-              pack, and deliver ready-to-serve meals on your cadence with flexible
-              shipping windows.
-            </p>
+            <h2 class="section-title">加入餐盒訂閱 Meal Club</h2>
+            <div class="section__intro">
+              <p>
+                Choose a plan that matches your pet's size and schedule. We'll prep, pack, and deliver
+                ready-to-serve meals on your cadence with flexible shipping windows.
+              </p>
+            </div>
             <div class="hero__actions">
               <a class="button button--primary" href="#shop">Build your box</a>
               <a class="button button--ghost" href="mailto:care@merrimore.com">Chat with nutrition</a>
@@ -247,11 +249,11 @@
 
       <section id="stories" class="section section--light">
         <div class="container">
-          <div class="section__heading">
-            <h2>Pet parents are seeing the difference.</h2>
+          <h2 class="section-title">真實回饋 Community Stories</h2>
+          <div class="section__intro">
             <p>
-              From energy levels to digestion, Merrimore families share the wins
-              they notice after switching to our recipes.
+              From energy levels to digestion, Merrimore families share the wins they notice after switching
+              to our recipes.
             </p>
           </div>
           <div class="testimonials">
@@ -283,11 +285,10 @@
 
       <section id="community" class="section">
         <div class="container">
-          <div class="section__heading">
-            <h2>Community bowls &amp; resources.</h2>
+          <h2 class="section-title">社群資源 Community Bowls</h2>
+          <div class="section__intro">
             <p>
-              Explore ideas for enrichment, training, and seasonal recipes from
-              our Merrimore pack leaders.
+              Explore ideas for enrichment, training, and seasonal recipes from our Merrimore pack leaders.
             </p>
           </div>
           <div class="community">
@@ -326,13 +327,17 @@
         <div class="container">
           <div class="split">
             <div>
-              <h2>Visit our neighborhood market.</h2>
-              <p>
-                Stop by Merrimore Market for same-day pick up, custom treat bars,
-                and fittings for collars, beds, and wellness essentials.
-              </p>
+              <h2 class="section-title">到門市走走 Visit Merrimore Market</h2>
+              <div class="section__intro">
+                <p>
+                  Stop by Merrimore Market for same-day pick up, custom treat bars, and fittings for collars,
+                  beds, and wellness essentials.
+                </p>
+              </div>
               <div class="hero__actions">
-                <a class="button button--primary" href="https://maps.google.com" target="_blank" rel="noopener">Plan your visit</a>
+                <a class="button button--primary" href="https://maps.google.com" target="_blank" rel="noopener">
+                  Plan your visit
+                </a>
                 <a class="button button--ghost" href="tel:+18885551212">Call (888) 555-1212</a>
               </div>
             </div>
@@ -341,6 +346,7 @@
                 src="https://images.unsplash.com/photo-1620744738794-a4c4edfb883c?auto=format&fit=crop&w=1000&q=80"
                 alt="Merrimore retail market with pet products"
               />
+              <figcaption>Merrimore Market stocks fresh meals, gear, and seasonal wellness picks.</figcaption>
             </figure>
           </div>
         </div>
