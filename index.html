@@ -96,13 +96,8 @@
               從外包裝到實際的山羊角，每一面向都以透明與嚴謹呈現，讓您在下單前就能看見牧野嚼樂的用心。
             </p>
           </div>
- codex/modify-image-display-for-zoom-feature-ltapmj
           <div class="product-gallery__layout">
             <figure class="product-gallery__display">
-
-          <div class="product-gallery__grid" role="list">
-            <figure class="product-gallery__item" role="listitem">
- main
               <button
                 type="button"
                 class="product-gallery__zoom"
@@ -110,50 +105,64 @@
                 aria-haspopup="dialog"
                 aria-controls="image-lightbox"
               >
-                <img
-                  src="docs/images/product-front.png"
-                  alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
- codex/modify-image-display-for-zoom-feature-ltapmj
-                />
+                <img src="docs/images/product-front.png" alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。" />
               </button>
               <figcaption class="product-gallery__caption">
                 正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。
               </figcaption>
+            </figure>
 
-                  loading="lazy"
-                />
-              </button>
-              <figcaption>正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。</figcaption>
-            </figure>
-            <figure class="product-gallery__item" role="listitem">
-              <button
-                type="button"
-                class="product-gallery__zoom"
-                aria-label="放大檢視圖片"
-                aria-haspopup="dialog"
-                aria-controls="image-lightbox"
-              >
-                <img
-                  src="docs/images/product-back.png"
-                  alt="牧野嚼樂山羊角背面包裝與成分標示。"
-                  loading="lazy"
-                />
-              </button>
-              <figcaption>背面標示潔淨來源、營養成分與餵食指南，資訊一目瞭然。</figcaption>
-            </figure>
-            <figure class="product-gallery__item" role="listitem">
-              <button
-                type="button"
-                class="product-gallery__zoom"
-                aria-label="放大檢視圖片"
-                aria-haspopup="dialog"
-                aria-controls="image-lightbox"
-              >
-                <img src="docs/images/product-horns.png" alt="牧野嚼樂精選山羊角的實拍特寫。" loading="lazy" />
-              </button>
-              <figcaption>低溫風乾保留天然紋理與膠原，厚實耐咬，提供毛孩滿足嚼勁。</figcaption>
- main
-            </figure>
+            <div class="product-gallery__grid" role="list">
+              <figure class="product-gallery__item" role="listitem">
+                <button
+                  type="button"
+                  class="product-gallery__zoom"
+                  aria-label="放大檢視圖片"
+                  aria-haspopup="dialog"
+                  aria-controls="image-lightbox"
+                >
+                  <img
+                    src="docs/images/product-front.png"
+                    alt="牧野嚼樂山羊角正面包裝，透明窗口可見山羊角實物。"
+                    loading="lazy"
+                  />
+                </button>
+                <figcaption>正面夾鏈袋設計搭配透明視窗，開封前即可檢視內容物。</figcaption>
+              </figure>
+              <figure class="product-gallery__item" role="listitem">
+                <button
+                  type="button"
+                  class="product-gallery__zoom"
+                  aria-label="放大檢視圖片"
+                  aria-haspopup="dialog"
+                  aria-controls="image-lightbox"
+                >
+                  <img
+                    src="docs/images/product-back.png"
+                    alt="牧野嚼樂山羊角背面包裝與成分標示。"
+                    loading="lazy"
+                  />
+                </button>
+                <figcaption>背面標示潔淨來源、營養成分與餵食指南，資訊一目瞭然。</figcaption>
+              </figure>
+              <figure class="product-gallery__item" role="listitem">
+                <button
+                  type="button"
+                  class="product-gallery__zoom"
+                  aria-label="放大檢視圖片"
+                  aria-haspopup="dialog"
+                  aria-controls="image-lightbox"
+                >
+                  <img
+                    src="docs/images/product-horns.png"
+                    alt="牧野嚼樂精選山羊角的實拍特寫。"
+                    loading="lazy"
+                  />
+                </button>
+                <figcaption>低溫風乾保留天然紋理與膠原，厚實耐咬，提供毛孩滿足嚼勁。</figcaption>
+              </figure>
+            </div>
+
             <div class="product-gallery__thumbnails" role="listbox" aria-label="瀏覽產品不同視角">
               <button
                 type="button"
@@ -494,7 +503,6 @@
           yearEl.textContent = new Date().getFullYear();
         }
 
- codex/modify-image-display-for-zoom-feature-ltapmj
         const gallery = document.querySelector('.product-gallery');
         if (gallery) {
           const displayImage = gallery.querySelector('.product-gallery__zoom img');
@@ -567,8 +575,6 @@
           }
         }
 
-
- main
         const lightbox = document.getElementById('image-lightbox');
         if (!lightbox) {
           return;
