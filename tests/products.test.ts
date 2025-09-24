@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { once } from 'node:events';
 import type { Server } from 'node:http';
-import { afterEach, beforeEach, describe, it } from 'node:test';
+import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import env from '../server/src/config/env';
 import createApp from '../server/src/app';
 import productsStore from '../server/src/store/productsStore';
@@ -46,6 +46,21 @@ describe('Products API', () => {
   let server: Server;
   let baseUrl: string;
   let adminToken: string;
+codex/add-error-handling-in-removeimagefile
+
+  const loginAsAdmin = async () => {
+    const response = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'admin', password: 'admin123' }),
+    });
+
+    assert.equal(response.status, 200);
+    const data = (await response.json()) as { token: string };
+    return data.token;
+  };
+
+main
 
   beforeEach(async () => {
     productsStore.clear();
@@ -61,7 +76,11 @@ describe('Products API', () => {
     }
 
     baseUrl = `http://127.0.0.1:${address.port}`;
+ codex/add-error-handling-in-removeimagefile
+    adminToken = await loginAsAdmin();
+
     adminToken = signJwt({ username: 'admin', role: 'admin' }, env.jwtSecret);
+ main
   });
 
   afterEach(async () => {
@@ -127,9 +146,13 @@ codex/add-file-removal-on-400-response
       method: 'POST',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: formData,
+codex/add-error-handling-in-removeimagefile
+      headers: { Authorization: `Bearer ${adminToken}` },
+
       headers: {
         Authorization: `Bearer ${adminToken}`,
       },
+ main
     });
 
     assert.equal(response.status, 400);
@@ -155,9 +178,13 @@ codex/add-file-removal-on-400-response
       method: 'POST',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: formData,
+codex/add-error-handling-in-removeimagefile
+      headers: { Authorization: `Bearer ${adminToken}` },
+
       headers: {
         Authorization: `Bearer ${adminToken}`,
       },
+ main
     });
 
     assert.equal(createResponse.status, 201);
@@ -189,9 +216,13 @@ codex/add-file-removal-on-400-response
       method: 'PUT',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: updateForm,
+codex/add-error-handling-in-removeimagefile
+      headers: { Authorization: `Bearer ${adminToken}` },
+
       headers: {
         Authorization: `Bearer ${adminToken}`,
       },
+main
     });
 
     assert.equal(updateResponse.status, 200);
@@ -208,12 +239,16 @@ codex/add-file-removal-on-400-response
 
     const deleteResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'DELETE',
+codex/add-error-handling-in-removeimagefile
+      headers: { Authorization: `Bearer ${adminToken}` },
+
  codex/add-file-removal-on-400-response
       headers: { Authorization: `Bearer ${adminToken}` },
 
       headers: {
         Authorization: `Bearer ${adminToken}`,
       },
+ main
  main
     });
 
@@ -222,5 +257,80 @@ codex/add-file-removal-on-400-response
     const listResponse = await fetch(`${baseUrl}/api/products`);
     const list = (await listResponse.json()) as unknown[];
     assert.equal(list.length, 0);
+  });
+
+  it('removes new upload when replacing an existing image fails', async () => {
+    const createForm = new FormData();
+    createForm.set('name', 'Product with image');
+    createForm.set('price', '9.99');
+    createForm.set('stock', '1');
+    createForm.set('image', new Blob(['original-image'], { type: 'image/png' }), 'original.png');
+
+    const createResponse = await fetch(`${baseUrl}/api/products`, {
+      method: 'POST',
+      body: createForm,
+      headers: { Authorization: `Bearer ${adminToken}` },
+    });
+
+    assert.equal(createResponse.status, 201);
+    const created = (await createResponse.json()) as {
+      id: string;
+      imageUrl?: string;
+    };
+
+    assert.ok(created.id);
+    assert.ok(created.imageUrl);
+
+    const existingImagePath = path.join(
+      env.uploadDir,
+      path.basename(created.imageUrl as string)
+    );
+    assert.equal(fs.existsSync(existingImagePath), true);
+
+    const updateForm = new FormData();
+    updateForm.set('name', 'Product with image');
+    updateForm.set('price', '19.99');
+    updateForm.set('stock', '2');
+    updateForm.set('image', new Blob(['new-image'], { type: 'image/png' }), 'new.png');
+
+    const unlinkCalls: string[] = [];
+    const originalUnlink = fs.promises.unlink;
+    mock.method(fs.promises, 'unlink', async (filePath: string) => {
+      unlinkCalls.push(filePath);
+
+      if (unlinkCalls.length === 1) {
+        const error = new Error('failed to delete existing image') as NodeJS.ErrnoException;
+        error.code = 'EACCES';
+        throw error;
+      }
+
+      return originalUnlink.call(fs.promises, filePath);
+    });
+
+    let updateResponse: globalThis.Response | null = null;
+    try {
+      updateResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
+        method: 'PUT',
+        body: updateForm,
+        headers: { Authorization: `Bearer ${adminToken}` },
+      });
+    } finally {
+      mock.restoreAll();
+    }
+
+    if (!updateResponse) {
+      throw new Error('Update response not received');
+    }
+
+    assert.equal(updateResponse.status, 500);
+    const body = (await updateResponse.json()) as { message: string };
+    assert.match(body.message, /Failed to update product image/);
+
+    assert.equal(unlinkCalls.length >= 2, true);
+    assert.equal(unlinkCalls[0], existingImagePath);
+
+    const newUploadPath = unlinkCalls[1];
+    assert.equal(path.dirname(newUploadPath), env.uploadDir);
+    assert.equal(fs.existsSync(newUploadPath), false);
   });
 });
