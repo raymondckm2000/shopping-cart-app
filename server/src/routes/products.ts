@@ -93,6 +93,21 @@ router.get('/', (_req: express.Request, res: express.Response) => {
   response.json(products);
 });
 
+router.get('/:id', (req: express.Request, res: express.Response) => {
+  const request = asProductRequest(req);
+  const response = asResponse(res);
+  const params = request.params as Record<string, string>;
+  const { id } = params;
+
+  const product = productsStore.findById(id);
+
+  if (!product) {
+    return response.status(404).json({ message: 'Product not found' });
+  }
+
+  return response.json(product);
+});
+
 router.post('/', requireAdmin, upload.single('image'), async (req: express.Request, res: express.Response) => {
   const request = asProductRequest(req);
   const response = asResponse(res);
@@ -103,6 +118,7 @@ router.post('/', requireAdmin, upload.single('image'), async (req: express.Reque
   const stock = body.stock;
 
   if (!name || price === undefined) {
+    await removeUploadedFile(request.file);
     return response.status(400).json({ message: 'name and price are required' });
   }
 
@@ -113,6 +129,7 @@ router.post('/', requireAdmin, upload.single('image'), async (req: express.Reque
     parsedPrice = parseNumberField(price, 'price');
     parsedStock = parseNumberField(stock ?? 0, 'stock');
   } catch (error) {
+    await removeUploadedFile(request.file);
     return response.status(400).json({ message: (error as Error).message });
   }
 
@@ -170,6 +187,7 @@ router.put('/:id', requireAdmin, upload.single('image'), async (req: express.Req
     try {
       await removeImageFile(existing.imageUrl);
     } catch (error) {
+      await removeUploadedFile(request.file);
       return response.status(500).json({ message: 'Failed to update product image' });
     }
   }
