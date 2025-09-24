@@ -1,25 +1,65 @@
-# Shopping Cart App
+# 🛒 Online Shopping Cart (for Codex Cloud Agent)
 
-This repository contains the static assets for the Merrimore boutique hospitality landing page. The full site is available from the
-repository root (`index.html`) so that GitHub Pages works immediately with either the **main branch / root** or **main branch / docs
-folder** configuration. The same files are also duplicated inside `docs/` for teams that prefer serving from that directory.
+## 1. Project Brief
+This project is an **Online Shopping Cart** web application with:
+- **Frontend** (React + Vite)
+- **Backend** (Node.js + Express)
+- **Database** (MongoDB)
+- **Storage** (local uploads folder, extendable to cloud)
+- **Target Users**: Retail customers (frontend) and Admins (backend).
 
-## Getting started
+---
 
-Open `index.html` directly in your browser or use a simple HTTP server such as `npx serve .` for local development. If you prefer
-to work from the `docs/` folder, `docs/index.html` contains the same markup and styles.
+## 2. Agent Instructions
+### Context
+You are an AI agent running in **Codex Cloud**, connected to this GitHub repository.  
+Your role is to **generate, update, and maintain code** for this project, following the instructions below.
 
-## Deployment
+### Primary Tasks
+- [ ] Initialize frontend (React + Vite + TypeScript).
+- [ ] Initialize backend (Node.js + Express + TypeScript).
+- [ ] Setup MongoDB model for products `{ name, description, price, imageUrl, stock }`.
+- [ ] Create API endpoints:
+  - `GET /products` → list all products
+  - `POST /products` → add product (with image upload)
+  - `PUT /products/:id` → update product
+  - `DELETE /products/:id` → delete product
+- [ ] Enable image upload & static serving (`/uploads` folder).
+- [ ] Build frontend pages:
+  - Home page with product listing
+  - Product detail page
+  - Shopping cart
+  - Checkout flow
+- [ ] Build backend admin panel (simple UI):
+  - Add/Edit/Delete product
+  - Upload product image
+- [ ] Implement authentication for admin routes (JWT).
+- [ ] Add responsive design (mobile / desktop).
+- [ ] Add basic test coverage.
 
-The repository ships with an automated GitHub Actions workflow (`.github/workflows/deploy.yml`) that publishes the static files to
-GitHub Pages whenever the `main` branch is updated. No manual build tooling is required.
+---
 
-1. Push your changes to `main`.
-2. The workflow bundles `index.html` and the entire `docs/` directory into a `public/` folder artifact and deploys it to the
-   `gh-pages` environment.
-3. The site becomes available at `https://<username>.github.io/<repository>/` as soon as the deployment completes. For a user
-   site, use a repository named `<username>.github.io` and the same workflow will publish to your root domain.
+## 3. Definition of Done ✅
+- User can browse products, add to cart, and checkout (frontend).
+- Admin can login, create/edit/delete products with image upload (backend).
+- MongoDB stores product and order data.
+- Unit tests for backend API endpoints pass (`pnpm test`).
+- Frontend works in Chrome, Edge, Safari (latest versions).
+- Code formatted with ESLint + Prettier, TypeScript enabled.
 
-If you prefer to manage GitHub Pages manually, you can still point the Pages settings to either `main` + `/ (root)` or `main` +
-`/docs`. The assets referenced by the page use relative paths, so they resolve correctly whether the site is served from the
-repository root or from the `docs/` directory.
+---
+
+## 4. Quick Start
+```bash
+# 下載專案
+git clone https://github.com/<your-username>/shopping-cart-app.git
+cd shopping-cart-app
+
+# 安裝依賴
+pnpm install
+
+# 啟動前端
+pnpm dev
+
+# 啟動後端
+pnpm start
