@@ -1,5 +1,5 @@
-import { randomUUID } from 'crypto';
-import { CreateProductInput, Product, UpdateProductInput } from '../models/product';
+import { randomUUID } from 'node:crypto';
+import { CreateProductInput, Product, UpdateProductInput } from '../models/product.js';
 
 class ProductsStore {
   private products: Product[] = [];

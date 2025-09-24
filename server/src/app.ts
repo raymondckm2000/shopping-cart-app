@@ -2,10 +2,10 @@
 import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
-import env from './config/env';
-import healthRouter from './routes/health';
-import productsRouter from './routes/products';
-import authRouter from './routes/auth';
+import env from './config/env.js';
+import healthRouter from './routes/health.js';
+import productsRouter from './routes/products.js';
+import authRouter from './routes/auth.js';
 
 export const createApp = () => {
   const app = express();

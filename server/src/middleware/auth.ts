@@ -1,8 +1,8 @@
 // @ts-nocheck
 import express from 'express';
 import type { NextFunction } from 'express';
-import env from '../config/env';
-import { verifyJwt, type JwtPayload as BaseJwtPayload } from '../lib/jwt';
+import env from '../config/env.js';
+import { verifyJwt, type JwtPayload as BaseJwtPayload } from '../lib/jwt.js';
 
 export interface AuthenticatedRequest extends express.Request {
   user?: JwtPayload;

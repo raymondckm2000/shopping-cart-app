@@ -1,12 +1,12 @@
 // @ts-nocheck
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import express from 'express';
 import multer from 'multer';
 import type { MulterFile } from 'multer';
-import env from '../config/env';
-import productsStore from '../store/productsStore';
-import { requireAdmin } from '../middleware/auth';
+import env from '../config/env.js';
+import productsStore from '../store/productsStore.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
