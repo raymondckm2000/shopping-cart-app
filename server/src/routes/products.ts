@@ -72,13 +72,26 @@ const removeImageFile = async (imageUrl?: string) => {
   }
 };
 
-const removeUploadedFile = async (file?: { path: string } | null) => {
+const removeUploadedFile = async (file?: MulterFile | null) => {
   if (!file) {
     return;
   }
 
+  let filePath = file.path;
+
+  if (!filePath) {
+    const { filename } = file;
+    const destination = file.destination ?? env.uploadDir;
+
+    if (!filename || !destination) {
+      return;
+    }
+
+    filePath = path.join(destination, filename);
+  }
+
   try {
-    await fs.promises.unlink(file.path);
+    await fs.promises.unlink(filePath);
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
     if (err.code !== 'ENOENT') {
