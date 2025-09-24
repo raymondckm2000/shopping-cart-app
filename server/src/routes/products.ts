@@ -118,6 +118,7 @@ router.post('/', requireAdmin, upload.single('image'), async (req: express.Reque
   const stock = body.stock;
 
   if (!name || price === undefined) {
+    await removeUploadedFile(request.file);
     return response.status(400).json({ message: 'name and price are required' });
   }
 
@@ -128,6 +129,7 @@ router.post('/', requireAdmin, upload.single('image'), async (req: express.Reque
     parsedPrice = parseNumberField(price, 'price');
     parsedStock = parseNumberField(stock ?? 0, 'stock');
   } catch (error) {
+    await removeUploadedFile(request.file);
     return response.status(400).json({ message: (error as Error).message });
   }
 
