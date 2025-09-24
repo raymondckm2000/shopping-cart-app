@@ -1,0 +1,8 @@
+{
+  "name": "shopping-cart-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node ./server/node_modules/tsx/dist/cli.mjs --test tests/products.test.ts"
+  }
+}

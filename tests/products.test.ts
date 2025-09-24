@@ -4,17 +4,17 @@ import path from 'node:path';
 import { once } from 'node:events';
 import type { Server } from 'node:http';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
+
 import env from '../server/src/config/env';
 import createApp from '../server/src/app';
 import productsStore from '../server/src/store/productsStore';
-import { signJwt } from '../server/src/lib/jwt';
 
 const cleanupUploads = async () => {
   try {
     const entries = await fs.promises.readdir(env.uploadDir);
     const removableEntries = entries.filter((entry) => entry !== '.gitkeep');
     await Promise.all(
-      removableEntries.map((entry) => fs.promises.unlink(path.join(env.uploadDir, entry)))
+      removableEntries.map((entry) => fs.promises.unlink(path.join(env.uploadDir, entry))),
     );
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
@@ -42,67 +42,34 @@ const loginAsAdmin = async (baseUrl: string) => {
   return data.token;
 };
 
+const startServer = async () => {
+  const app = createApp();
+  const server = app.listen(0);
+  await once(server, 'listening');
+
+  const address = server.address();
+  if (!address || typeof address === 'string') {
+    throw new Error('Unable to determine server address');
+  }
+
+  const baseUrl = `http://127.0.0.1:${address.port}`;
+
+  return { server, baseUrl };
+};
+
 describe('Products API', () => {
   let server: Server;
   let baseUrl: string;
   let adminToken: string;
-codex/update-tests-to-include-admin-jwt
-
-codex/add-error-handling-in-removeimagefile
-
-  const loginAsAdmin = async () => {
-    const response = await fetch(`${baseUrl}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'admin', password: 'admin123' }),
-    });
-
-    assert.equal(response.status, 200);
-    const data = (await response.json()) as { token: string };
-    return data.token;
-  };
-
-main
-main
 
   beforeEach(async () => {
     productsStore.clear();
     await cleanupUploads();
 
-    const app = createApp();
-    server = app.listen(0);
-    await once(server, 'listening');
-
-    const address = server.address();
-    if (!address || typeof address === 'string') {
-      throw new Error('Unable to determine server address');
-    }
-
-    baseUrl = `http://127.0.0.1:${address.port}`;
-codex/update-tests-to-include-admin-jwt
-
-    const loginResponse = await fetch(`${baseUrl}/api/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: env.adminUsername,
-        password: env.adminPassword,
-      }),
-    });
-
-    assert.equal(loginResponse.status, 200);
-    const loginBody = (await loginResponse.json()) as { token?: string };
-    assert.ok(loginBody.token, 'Expected login response to contain a token');
-    adminToken = loginBody.token;
-
- codex/add-error-handling-in-removeimagefile
-    adminToken = await loginAsAdmin();
-
-    adminToken = signJwt({ username: 'admin', role: 'admin' }, env.jwtSecret);
- main
-main
+    const started = await startServer();
+    server = started.server;
+    baseUrl = started.baseUrl;
+    adminToken = await loginAsAdmin(baseUrl);
   });
 
   afterEach(async () => {
@@ -122,10 +89,6 @@ main
     assert.equal(Array.isArray(data), true);
     assert.equal(data.length, 0);
   });
-
-codex/add-file-removal-on-400-response
-  it('rejects creating a product without required fields and removes uploaded file', async () => {
-    const adminToken = await loginAsAdmin(baseUrl);
 
   it('returns a product by id', async () => {
     const product = productsStore.create({
@@ -158,8 +121,7 @@ codex/add-file-removal-on-400-response
     assert.match(body.message, /Product not found/);
   });
 
-  it('rejects creating a product without required fields', async () => {
- main
+  it('rejects creating a product without required fields and removes uploaded file', async () => {
     const formData = new FormData();
     formData.set('description', 'Missing name and price');
     formData.set('image', new Blob(['test-image'], { type: 'image/png' }), 'test.png');
@@ -168,19 +130,6 @@ codex/add-file-removal-on-400-response
       method: 'POST',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: formData,
-codex/update-tests-to-include-admin-jwt
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
-
-codex/add-error-handling-in-removeimagefile
-      headers: { Authorization: `Bearer ${adminToken}` },
-
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
- main
-main
     });
 
     assert.equal(response.status, 400);
@@ -193,8 +142,6 @@ main
   });
 
   it('creates, updates, and deletes a product successfully', async () => {
-    const adminToken = await loginAsAdmin(baseUrl);
-
     const formData = new FormData();
     formData.set('name', 'Test Product');
     formData.set('description', 'A product for testing');
@@ -206,19 +153,6 @@ main
       method: 'POST',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: formData,
-codex/update-tests-to-include-admin-jwt
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
-
-codex/add-error-handling-in-removeimagefile
-      headers: { Authorization: `Bearer ${adminToken}` },
-
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
- main
-main
     });
 
     assert.equal(createResponse.status, 201);
@@ -250,19 +184,6 @@ main
       method: 'PUT',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: updateForm,
-codex/update-tests-to-include-admin-jwt
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
-
-codex/add-error-handling-in-removeimagefile
-      headers: { Authorization: `Bearer ${adminToken}` },
-
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
-main
-main
     });
 
     assert.equal(updateResponse.status, 200);
@@ -279,23 +200,7 @@ main
 
     const deleteResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'DELETE',
-codex/update-tests-to-include-admin-jwt
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
-
-codex/add-error-handling-in-removeimagefile
       headers: { Authorization: `Bearer ${adminToken}` },
-
- codex/add-file-removal-on-400-response
-      headers: { Authorization: `Bearer ${adminToken}` },
-
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-      },
- main
- main
-main
     });
 
     assert.equal(deleteResponse.status, 204);
@@ -305,7 +210,6 @@ main
     assert.equal(list.length, 0);
   });
 
-codex/update-tests-to-include-admin-jwt
   it('returns 401 when missing admin token for protected routes', async () => {
     const formData = new FormData();
     formData.set('name', 'Unauthorized Product');
@@ -319,6 +223,7 @@ codex/update-tests-to-include-admin-jwt
     assert.equal(response.status, 401);
     const body = (await response.json()) as { message: string };
     assert.equal(body.message, 'Unauthorized');
+  });
 
   it('removes new upload when replacing an existing image fails', async () => {
     const createForm = new FormData();
@@ -342,10 +247,7 @@ codex/update-tests-to-include-admin-jwt
     assert.ok(created.id);
     assert.ok(created.imageUrl);
 
-    const existingImagePath = path.join(
-      env.uploadDir,
-      path.basename(created.imageUrl as string)
-    );
+    const existingImagePath = path.join(env.uploadDir, path.basename(created.imageUrl as string));
     assert.equal(fs.existsSync(existingImagePath), true);
 
     const updateForm = new FormData();
@@ -393,6 +295,5 @@ codex/update-tests-to-include-admin-jwt
     const newUploadPath = unlinkCalls[1];
     assert.equal(path.dirname(newUploadPath), env.uploadDir);
     assert.equal(fs.existsSync(newUploadPath), false);
- main
   });
 });
