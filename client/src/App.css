@@ -119,6 +119,41 @@ a:hover {
   gap: 1.5rem;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 360px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.form-field input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field input:focus-visible {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.form-error {
+  margin: 0;
+  color: #dc2626;
+  font-weight: 500;
+}
+
 .page__header {
   display: flex;
   flex-direction: column;

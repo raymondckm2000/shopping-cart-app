@@ -5,6 +5,7 @@ import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import HomeProductsPage from './pages/HomeProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import AdminPage from './pages/AdminPage';
 import './App.css';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
       <Footer />
