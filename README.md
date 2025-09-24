@@ -83,6 +83,7 @@ README.md
   - Update this `README.md` when features are added/changed  
 - Commit messages must follow **Conventional Commits** (e.g. `feat: add product CRUD API`).
 - 禁止建立分支，請直接 commit main
+- 🚫 禁止建立 PR，請直接 commit 到 main。
 
 ---
 
