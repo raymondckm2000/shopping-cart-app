@@ -81,7 +81,8 @@ README.md
   - Use `multer` for image uploads (saved in `/server/uploads/`)  
   - Write tests in `/tests/` folder  
   - Update this `README.md` when features are added/changed  
-- Commit messages must follow **Conventional Commits** (e.g. `feat: add product CRUD API`).  
+- Commit messages must follow **Conventional Commits** (e.g. `feat: add product CRUD API`).
+- 禁止建立分支，請直接 commit main
 
 ---
 
