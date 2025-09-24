@@ -25,6 +25,7 @@ const cleanupUploads = async () => {
 describe('Products API', () => {
   let server: Server;
   let baseUrl: string;
+  let adminToken: string;
 
   beforeEach(async () => {
     productsStore.clear();
@@ -40,6 +41,22 @@ describe('Products API', () => {
     }
 
     baseUrl = `http://127.0.0.1:${address.port}`;
+
+    const loginResponse = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: env.adminUsername,
+        password: env.adminPassword,
+      }),
+    });
+
+    assert.equal(loginResponse.status, 200);
+    const loginBody = (await loginResponse.json()) as { token?: string };
+    assert.ok(loginBody.token, 'Expected login response to contain a token');
+    adminToken = loginBody.token;
   });
 
   afterEach(async () => {
@@ -67,6 +84,9 @@ describe('Products API', () => {
     const response = await fetch(`${baseUrl}/api/products`, {
       method: 'POST',
       body: formData,
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(response.status, 400);
@@ -85,6 +105,9 @@ describe('Products API', () => {
     const createResponse = await fetch(`${baseUrl}/api/products`, {
       method: 'POST',
       body: formData,
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(createResponse.status, 201);
@@ -115,6 +138,9 @@ describe('Products API', () => {
     const updateResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'PUT',
       body: updateForm,
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(updateResponse.status, 200);
@@ -131,6 +157,9 @@ describe('Products API', () => {
 
     const deleteResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(deleteResponse.status, 204);
@@ -138,5 +167,20 @@ describe('Products API', () => {
     const listResponse = await fetch(`${baseUrl}/api/products`);
     const list = (await listResponse.json()) as unknown[];
     assert.equal(list.length, 0);
+  });
+
+  it('returns 401 when missing admin token for protected routes', async () => {
+    const formData = new FormData();
+    formData.set('name', 'Unauthorized Product');
+    formData.set('price', '9.99');
+
+    const response = await fetch(`${baseUrl}/api/products`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    assert.equal(response.status, 401);
+    const body = (await response.json()) as { message: string };
+    assert.equal(body.message, 'Unauthorized');
   });
 });
