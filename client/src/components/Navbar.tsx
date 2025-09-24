@@ -23,6 +23,9 @@ const Navbar = () => {
               {totalItems}
             </span>
           </NavLink>
+          <NavLink to="/admin" className={getLinkClass}>
+            Admin
+          </NavLink>
         </nav>
       </div>
     </header>

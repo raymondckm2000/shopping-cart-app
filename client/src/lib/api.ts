@@ -11,6 +11,15 @@ const rawBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
 const normalizedBaseUrl = rawBaseUrl.replace(/\/$/, '');
 const baseUrl = normalizedBaseUrl || '/api';
 
+interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+}
+
 export class ApiError extends Error {
   status: number;
 
@@ -67,4 +76,15 @@ export const getProduct = async (id: string): Promise<Product> => {
 
     return product;
   }
+};
+
+export const login = async ({ username, password }: LoginRequest): Promise<LoginResponse> => {
+  if (!username || !password) {
+    throw new ApiError('username and password are required', 400);
+  }
+
+  return fetchJson<LoginResponse>('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
+  });
 };
