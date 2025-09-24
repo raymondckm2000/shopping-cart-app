@@ -93,6 +93,21 @@ router.get('/', (_req: express.Request, res: express.Response) => {
   response.json(products);
 });
 
+router.get('/:id', (req: express.Request, res: express.Response) => {
+  const request = asProductRequest(req);
+  const response = asResponse(res);
+  const params = request.params as Record<string, string>;
+  const { id } = params;
+
+  const product = productsStore.findById(id);
+
+  if (!product) {
+    return response.status(404).json({ message: 'Product not found' });
+  }
+
+  return response.json(product);
+});
+
 router.post('/', requireAdmin, upload.single('image'), async (req: express.Request, res: express.Response) => {
   const request = asProductRequest(req);
   const response = asResponse(res);

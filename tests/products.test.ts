@@ -7,6 +7,7 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import env from '../server/src/config/env';
 import createApp from '../server/src/app';
 import productsStore from '../server/src/store/productsStore';
+import { signJwt } from '../server/src/lib/jwt';
 
 const cleanupUploads = async () => {
   try {
@@ -25,6 +26,7 @@ const cleanupUploads = async () => {
 describe('Products API', () => {
   let server: Server;
   let baseUrl: string;
+  let adminToken: string;
 
   beforeEach(async () => {
     productsStore.clear();
@@ -40,6 +42,7 @@ describe('Products API', () => {
     }
 
     baseUrl = `http://127.0.0.1:${address.port}`;
+    adminToken = signJwt({ username: 'admin', role: 'admin' }, env.jwtSecret);
   });
 
   afterEach(async () => {
@@ -60,6 +63,37 @@ describe('Products API', () => {
     assert.equal(data.length, 0);
   });
 
+  it('returns a product by id', async () => {
+    const product = productsStore.create({
+      name: 'Stored Product',
+      price: 12.34,
+      stock: 7,
+    });
+
+    const response = await fetch(`${baseUrl}/api/products/${product.id}`);
+
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as {
+      id: string;
+      name: string;
+      price: number;
+      stock: number;
+    };
+
+    assert.equal(body.id, product.id);
+    assert.equal(body.name, 'Stored Product');
+    assert.equal(body.price, 12.34);
+    assert.equal(body.stock, 7);
+  });
+
+  it('returns 404 when a product is not found', async () => {
+    const response = await fetch(`${baseUrl}/api/products/non-existent-id`);
+
+    assert.equal(response.status, 404);
+    const body = (await response.json()) as { message: string };
+    assert.match(body.message, /Product not found/);
+  });
+
   it('rejects creating a product without required fields', async () => {
     const formData = new FormData();
     formData.set('description', 'Missing name and price');
@@ -67,6 +101,9 @@ describe('Products API', () => {
     const response = await fetch(`${baseUrl}/api/products`, {
       method: 'POST',
       body: formData,
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(response.status, 400);
@@ -85,6 +122,9 @@ describe('Products API', () => {
     const createResponse = await fetch(`${baseUrl}/api/products`, {
       method: 'POST',
       body: formData,
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(createResponse.status, 201);
@@ -115,6 +155,9 @@ describe('Products API', () => {
     const updateResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'PUT',
       body: updateForm,
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(updateResponse.status, 200);
@@ -131,6 +174,9 @@ describe('Products API', () => {
 
     const deleteResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
     });
 
     assert.equal(deleteResponse.status, 204);
