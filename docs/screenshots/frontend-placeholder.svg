@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Frontend preview placeholder</title>
+  <desc id="desc">Placeholder image for the storefront UI screenshot.</desc>
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.85" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#gradient)" rx="32" />
+  <rect x="120" y="140" width="960" height="440" rx="28" fill="rgba(255,255,255,0.88)" />
+  <rect x="180" y="200" width="320" height="220" rx="18" fill="#dbeafe" />
+  <rect x="540" y="200" width="320" height="220" rx="18" fill="#c7d2fe" />
+  <rect x="900" y="200" width="140" height="220" rx="18" fill="#bfdbfe" />
+  <rect x="540" y="450" width="220" height="48" rx="14" fill="#6366f1" />
+  <rect x="780" y="450" width="160" height="48" rx="14" fill="#ec4899" />
+  <text x="120" y="110" font-family="'Inter', 'Noto Sans TC', sans-serif" font-size="42" font-weight="700" fill="rgba(255,255,255,0.95)">
+    Storefront UI Preview
+  </text>
+  <text x="140" y="520" font-family="'Inter', 'Noto Sans TC', sans-serif" font-size="28" fill="#1e293b">
+    Screenshot placeholder - replace after deployment
+  </text>
+</svg>
