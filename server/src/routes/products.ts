@@ -170,6 +170,7 @@ router.put('/:id', requireAdmin, upload.single('image'), async (req: express.Req
     try {
       await removeImageFile(existing.imageUrl);
     } catch (error) {
+      await removeUploadedFile(request.file);
       return response.status(500).json({ message: 'Failed to update product image' });
     }
   }
