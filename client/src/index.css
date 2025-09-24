@@ -1,5 +1,6 @@
-* {
-  box-sizing: border-box;
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -10,11 +11,22 @@ a:hover {
   color: inherit;
 }
 
-a:focus {
-  outline: none;
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
-a:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 4px;
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+}
+
+input {
+  font: inherit;
 }

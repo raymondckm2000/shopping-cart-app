@@ -33,7 +33,9 @@ JWT_SECRET=secret123
 UPLOAD_DIR=uploads
 
 ⚠️ Do not commit `.env` files with real secrets.  
-Use **Vercel / Render / Railway / Codex Cloud Project Settings** to configure actual values.  
+Use **Vercel / Render / Railway / Codex Cloud Project Settings** to configure actual values.
+
+For the Vite frontend, copy `client/.env.example` to `client/.env` and set `VITE_API_BASE_URL` to your backend URL (defaults to `http://localhost:3000/api`).  
 
 ---
 
@@ -50,14 +52,14 @@ README.md
 ---
 
 ## 5. Features (User Stories)
-- [ ] Customer: Browse products with images, name, price  
-- [ ] Customer: Add/remove/update items in cart  
-- [ ] Customer: Checkout flow (address + payment placeholder)  
+- [x] Customer: Browse products with images, name, price  
+- [x] Customer: Add/remove/update items in cart  
+- [x] Customer: Checkout flow (address + payment placeholder)  
 - [ ] Admin: Login/Logout with JWT  
 - [ ] Admin: Add/Edit/Delete products  
 - [ ] Admin: Upload product images  
 - [ ] System: Store data in MongoDB Atlas  
-- [ ] System: Responsive UI (mobile + desktop)  
+- [x] System: Responsive UI (mobile + desktop)  
 
 ---
 
@@ -87,7 +89,12 @@ README.md
 
 ---
 
-## 8. Roadmap
+## 8. Frontend Preview (Placeholder)
+![Storefront placeholder](docs/screenshots/frontend-placeholder.svg)
+
+---
+
+## 9. Roadmap
 - [ ] Deploy frontend to Vercel (connected to `client/`)  
 - [ ] Deploy backend to Render or Railway (connected to `server/`)  
 - [ ] Add Stripe/PayPal payment integration  
