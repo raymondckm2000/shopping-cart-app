@@ -7,12 +7,14 @@ import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import env from '../server/src/config/env';
 import createApp from '../server/src/app';
 import productsStore from '../server/src/store/productsStore';
+import { signJwt } from '../server/src/lib/jwt';
 
 const cleanupUploads = async () => {
   try {
     const entries = await fs.promises.readdir(env.uploadDir);
+    const removableEntries = entries.filter((entry) => entry !== '.gitkeep');
     await Promise.all(
-      entries.map((entry) => fs.promises.unlink(path.join(env.uploadDir, entry)))
+      removableEntries.map((entry) => fs.promises.unlink(path.join(env.uploadDir, entry)))
     );
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
@@ -22,10 +24,29 @@ const cleanupUploads = async () => {
   }
 };
 
+const loginAsAdmin = async (baseUrl: string) => {
+  const response = await fetch(`${baseUrl}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: env.adminUsername,
+      password: env.adminPassword,
+    }),
+  });
+
+  assert.equal(response.status, 200);
+
+  const data = (await response.json()) as { token: string };
+  assert.ok(data.token);
+
+  return data.token;
+};
+
 describe('Products API', () => {
   let server: Server;
   let baseUrl: string;
   let adminToken: string;
+codex/add-error-handling-in-removeimagefile
 
   const loginAsAdmin = async () => {
     const response = await fetch(`${baseUrl}/api/auth/login`, {
@@ -38,6 +59,8 @@ describe('Products API', () => {
     const data = (await response.json()) as { token: string };
     return data.token;
   };
+
+main
 
   beforeEach(async () => {
     productsStore.clear();
@@ -53,7 +76,11 @@ describe('Products API', () => {
     }
 
     baseUrl = `http://127.0.0.1:${address.port}`;
+ codex/add-error-handling-in-removeimagefile
     adminToken = await loginAsAdmin();
+
+    adminToken = signJwt({ username: 'admin', role: 'admin' }, env.jwtSecret);
+ main
   });
 
   afterEach(async () => {
@@ -74,22 +101,72 @@ describe('Products API', () => {
     assert.equal(data.length, 0);
   });
 
+codex/add-file-removal-on-400-response
+  it('rejects creating a product without required fields and removes uploaded file', async () => {
+    const adminToken = await loginAsAdmin(baseUrl);
+
+  it('returns a product by id', async () => {
+    const product = productsStore.create({
+      name: 'Stored Product',
+      price: 12.34,
+      stock: 7,
+    });
+
+    const response = await fetch(`${baseUrl}/api/products/${product.id}`);
+
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as {
+      id: string;
+      name: string;
+      price: number;
+      stock: number;
+    };
+
+    assert.equal(body.id, product.id);
+    assert.equal(body.name, 'Stored Product');
+    assert.equal(body.price, 12.34);
+    assert.equal(body.stock, 7);
+  });
+
+  it('returns 404 when a product is not found', async () => {
+    const response = await fetch(`${baseUrl}/api/products/non-existent-id`);
+
+    assert.equal(response.status, 404);
+    const body = (await response.json()) as { message: string };
+    assert.match(body.message, /Product not found/);
+  });
+
   it('rejects creating a product without required fields', async () => {
+ main
     const formData = new FormData();
     formData.set('description', 'Missing name and price');
+    formData.set('image', new Blob(['test-image'], { type: 'image/png' }), 'test.png');
 
     const response = await fetch(`${baseUrl}/api/products`, {
       method: 'POST',
-      body: formData,
       headers: { Authorization: `Bearer ${adminToken}` },
+      body: formData,
+codex/add-error-handling-in-removeimagefile
+      headers: { Authorization: `Bearer ${adminToken}` },
+
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+ main
     });
 
     assert.equal(response.status, 400);
     const body = (await response.json()) as { message: string };
     assert.match(body.message, /name and price are required/);
+
+    const uploadedEntries = await fs.promises.readdir(env.uploadDir);
+    const storedFiles = uploadedEntries.filter((entry) => entry !== '.gitkeep');
+    assert.equal(storedFiles.length, 0);
   });
 
   it('creates, updates, and deletes a product successfully', async () => {
+    const adminToken = await loginAsAdmin(baseUrl);
+
     const formData = new FormData();
     formData.set('name', 'Test Product');
     formData.set('description', 'A product for testing');
@@ -99,8 +176,15 @@ describe('Products API', () => {
 
     const createResponse = await fetch(`${baseUrl}/api/products`, {
       method: 'POST',
-      body: formData,
       headers: { Authorization: `Bearer ${adminToken}` },
+      body: formData,
+codex/add-error-handling-in-removeimagefile
+      headers: { Authorization: `Bearer ${adminToken}` },
+
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+ main
     });
 
     assert.equal(createResponse.status, 201);
@@ -130,8 +214,15 @@ describe('Products API', () => {
 
     const updateResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'PUT',
-      body: updateForm,
       headers: { Authorization: `Bearer ${adminToken}` },
+      body: updateForm,
+codex/add-error-handling-in-removeimagefile
+      headers: { Authorization: `Bearer ${adminToken}` },
+
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+main
     });
 
     assert.equal(updateResponse.status, 200);
@@ -148,7 +239,17 @@ describe('Products API', () => {
 
     const deleteResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'DELETE',
+codex/add-error-handling-in-removeimagefile
       headers: { Authorization: `Bearer ${adminToken}` },
+
+ codex/add-file-removal-on-400-response
+      headers: { Authorization: `Bearer ${adminToken}` },
+
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+ main
+ main
     });
 
     assert.equal(deleteResponse.status, 204);
