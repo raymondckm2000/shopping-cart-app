@@ -1,0 +1,15 @@
+# Node
+node_modules/
+dist/
+*.log
+
+# Vite
+client/.vite/
+
+# Env files
+.env
+.env.*.local
+
+# Uploads runtime content
+server/uploads/*
+!server/uploads/.gitkeep
