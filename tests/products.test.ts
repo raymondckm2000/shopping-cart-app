@@ -46,6 +46,8 @@ describe('Products API', () => {
   let server: Server;
   let baseUrl: string;
   let adminToken: string;
+codex/update-tests-to-include-admin-jwt
+
 codex/add-error-handling-in-removeimagefile
 
   const loginAsAdmin = async () => {
@@ -60,6 +62,7 @@ codex/add-error-handling-in-removeimagefile
     return data.token;
   };
 
+main
 main
 
   beforeEach(async () => {
@@ -76,11 +79,30 @@ main
     }
 
     baseUrl = `http://127.0.0.1:${address.port}`;
+codex/update-tests-to-include-admin-jwt
+
+    const loginResponse = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: env.adminUsername,
+        password: env.adminPassword,
+      }),
+    });
+
+    assert.equal(loginResponse.status, 200);
+    const loginBody = (await loginResponse.json()) as { token?: string };
+    assert.ok(loginBody.token, 'Expected login response to contain a token');
+    adminToken = loginBody.token;
+
  codex/add-error-handling-in-removeimagefile
     adminToken = await loginAsAdmin();
 
     adminToken = signJwt({ username: 'admin', role: 'admin' }, env.jwtSecret);
  main
+main
   });
 
   afterEach(async () => {
@@ -146,6 +168,11 @@ codex/add-file-removal-on-400-response
       method: 'POST',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: formData,
+codex/update-tests-to-include-admin-jwt
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+
 codex/add-error-handling-in-removeimagefile
       headers: { Authorization: `Bearer ${adminToken}` },
 
@@ -153,6 +180,7 @@ codex/add-error-handling-in-removeimagefile
         Authorization: `Bearer ${adminToken}`,
       },
  main
+main
     });
 
     assert.equal(response.status, 400);
@@ -178,6 +206,11 @@ codex/add-error-handling-in-removeimagefile
       method: 'POST',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: formData,
+codex/update-tests-to-include-admin-jwt
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+
 codex/add-error-handling-in-removeimagefile
       headers: { Authorization: `Bearer ${adminToken}` },
 
@@ -185,6 +218,7 @@ codex/add-error-handling-in-removeimagefile
         Authorization: `Bearer ${adminToken}`,
       },
  main
+main
     });
 
     assert.equal(createResponse.status, 201);
@@ -216,12 +250,18 @@ codex/add-error-handling-in-removeimagefile
       method: 'PUT',
       headers: { Authorization: `Bearer ${adminToken}` },
       body: updateForm,
+codex/update-tests-to-include-admin-jwt
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+
 codex/add-error-handling-in-removeimagefile
       headers: { Authorization: `Bearer ${adminToken}` },
 
       headers: {
         Authorization: `Bearer ${adminToken}`,
       },
+main
 main
     });
 
@@ -239,6 +279,11 @@ main
 
     const deleteResponse = await fetch(`${baseUrl}/api/products/${created.id}`, {
       method: 'DELETE',
+codex/update-tests-to-include-admin-jwt
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+
 codex/add-error-handling-in-removeimagefile
       headers: { Authorization: `Bearer ${adminToken}` },
 
@@ -250,6 +295,7 @@ codex/add-error-handling-in-removeimagefile
       },
  main
  main
+main
     });
 
     assert.equal(deleteResponse.status, 204);
@@ -258,6 +304,21 @@ codex/add-error-handling-in-removeimagefile
     const list = (await listResponse.json()) as unknown[];
     assert.equal(list.length, 0);
   });
+
+codex/update-tests-to-include-admin-jwt
+  it('returns 401 when missing admin token for protected routes', async () => {
+    const formData = new FormData();
+    formData.set('name', 'Unauthorized Product');
+    formData.set('price', '9.99');
+
+    const response = await fetch(`${baseUrl}/api/products`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    assert.equal(response.status, 401);
+    const body = (await response.json()) as { message: string };
+    assert.equal(body.message, 'Unauthorized');
 
   it('removes new upload when replacing an existing image fails', async () => {
     const createForm = new FormData();
@@ -332,5 +393,6 @@ codex/add-error-handling-in-removeimagefile
     const newUploadPath = unlinkCalls[1];
     assert.equal(path.dirname(newUploadPath), env.uploadDir);
     assert.equal(fs.existsSync(newUploadPath), false);
+ main
   });
 });
