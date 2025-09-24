@@ -52,7 +52,7 @@ Your role is to **generate, update, and maintain code** for this project, follow
 ## 4. Quick Start
 ```bash
 # 下載專案
-git clone https://github.com/<your-username>/shopping-cart-app.git
+git clone https://github.com/raymondckm2000/shopping-cart-app.git
 cd shopping-cart-app
 
 # 安裝依賴
