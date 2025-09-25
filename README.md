@@ -95,11 +95,20 @@ README.md
 ---
 
 ## 9. Roadmap
-- [ ] Deploy frontend to Vercel (connected to `client/`)  
-- [ ] Deploy backend to Render or Railway (connected to `server/`)  
-- [ ] Add Stripe/PayPal payment integration  
-- [ ] Add order history for customers  
-- [ ] Add product categories and search  
-- [ ] Add analytics dashboard for admin  
+- [ ] Deploy frontend to Vercel (connected to `client/`)
+- [ ] Deploy backend to Render or Railway (connected to `server/`)
+- [ ] Add Stripe/PayPal payment integration
+- [ ] Add order history for customers
+- [ ] Add product categories and search
+- [ ] Add analytics dashboard for admin
+
+---
+
+## 10. Render Troubleshooting
+- **Accessing logs after a failed deploy**
+  - Open the service in the [Render Dashboard](https://dashboard.render.com/), select the failing deploy from the **Events** tab, and inspect the real-time logs at the bottom of the page.
+  - Alternatively install the [Render CLI](https://render.com/docs/render-cli) and run `render login`, then fetch logs with `render logs --service <service-id> --tail` to stream the most recent output from the instance.
+  - For historical context or sharing with support, append `--since 30m` (or another window) to pull logs from the specified time range.
+- **Log contents**: The backend emits structured startup diagnostics and captures `uncaughtException` / `unhandledRejection` events, so all fatal setup errors appear in the Render log stream.
 
 ---
