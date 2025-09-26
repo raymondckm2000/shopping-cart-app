@@ -10,7 +10,6 @@ export interface StartupCheckResult {
 }
 
 const sensitiveEnvVars: Array<{ key: string; description: string }> = [
-  { key: 'DATABASE_URL', description: 'Database connection string' },
   { key: 'JWT_SECRET', description: 'JWT secret' },
   { key: 'ADMIN_USERNAME', description: 'Admin username' },
   { key: 'ADMIN_PASSWORD', description: 'Admin password' },
@@ -63,6 +62,32 @@ export const performStartupChecks = (): StartupCheckResult[] => {
     status: 'passed',
     message: `Running in \"${env.nodeEnv}\" mode.`,
   });
+
+  try {
+    const databaseUrl = env.databaseUrl;
+    results.push({
+      name: 'env:DATABASE_URL',
+      status: 'passed',
+      message: 'Database connection string provided via environment variable.',
+    });
+
+    if (!databaseUrl.trim()) {
+      results.push({
+        name: 'env:DATABASE_URL format',
+        status: 'warning',
+        message: 'DATABASE_URL is empty after trimming whitespace.',
+      });
+    }
+  } catch (error) {
+    results.push({
+      name: 'env:DATABASE_URL',
+      status: 'failed',
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Missing required environment variable: DATABASE_URL',
+    });
+  }
 
   sensitiveEnvVars.forEach(({ key, description }) => {
     if (!process.env[key]) {

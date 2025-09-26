@@ -24,11 +24,14 @@ No local development is required. All code will be generated, updated, and maint
 ---
 
 ## 3. Environment
-Environment variables will be stored on **cloud deployment platforms** only.  
+Environment variables will be stored on **cloud deployment platforms** only.
+
+> **Important:** The backend will refuse to start if `DATABASE_URL` is not supplied. Configure this value in your deployment (or
+> local `.env`) before booting the API.
 
 Example `.env.example` file (committed to repo for reference):  
 PORT=3000
-DATABASE_URL=mongodb+srv://<user>:<pass>@cluster.mongodb.net/shopping_cart
+DATABASE_URL=mongodb+srv://<user>:<pass>@cluster.mongodb.net/shopping_cart # Required
 JWT_SECRET=secret123
 UPLOAD_DIR=uploads
 
