@@ -14,6 +14,33 @@ const { default: env } = await import('../server/src/config/env');
 const { default: createApp } = await import('../server/src/app');
 const { default: productsStore } = await import('../server/src/store/productsStore');
 
+describe('root endpoint', () => {
+  let server: Server;
+
+  afterEach(async () => {
+    if (server) {
+      server.close();
+      await once(server, 'close');
+    }
+  });
+
+  it('responds with 200 status code', async () => {
+    const app = createApp();
+    server = app.listen(0);
+
+    await once(server, 'listening');
+
+    const address = server.address();
+    assert.ok(address && typeof address !== 'string', 'Expected address info');
+
+    const response = await fetch(`http://127.0.0.1:${address.port}/`);
+
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.status, 'ok');
+  });
+});
+
 const runFallbackAuthCheck = async () => {
   const appModuleUrl = new URL('../server/src/app.ts', import.meta.url);
   const envModuleUrl = new URL('../server/src/config/env.ts', import.meta.url);

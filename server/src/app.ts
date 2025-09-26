@@ -15,6 +15,13 @@ export const createApp = () => {
   app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'));
   app.use('/uploads', express.static(env.uploadDir));
 
+  const rootHandler: express.RequestHandler = (_req, res) => {
+    res.json({ status: 'ok' });
+  };
+
+  app.get('/', rootHandler);
+  app.head('/', rootHandler);
+
   app.get('/api', (_req: express.Request, res: express.Response) => {
     const response = res as express.Response;
 
