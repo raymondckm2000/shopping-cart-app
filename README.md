@@ -68,6 +68,10 @@ The server automatically boots even if `JWT_SECRET`, `ADMIN_USERNAME`, or `ADMIN
 
 For the Vite frontend, copy `client/.env.example` to `client/.env` and set `VITE_API_BASE_URL` to your backend URL (defaults to `http://localhost:3000/api`).
 
+### Development admin credentials
+
+When the backend starts without explicit `ADMIN_USERNAME` or `ADMIN_PASSWORD` environment variables, it falls back to the development credentials `admin` / `password`. These values are intended for local testing only—configure secure, unique credentials in every deployed environment before exposing the API to real users.
+
 ### Temporarily allowing development fallbacks in production
 
 If you need to bring the API online before the production secrets are ready (for example, while validating a new hosting environment), simply deploy without the admin secrets. The API will use development defaults, disable admin login, and emit warnings reminding you to finish the secure setup. When you are ready to enforce strict checks again, either configure the real secrets or set `ALLOW_DEVELOPMENT_FALLBACKS=false` to block startup until they are present.
