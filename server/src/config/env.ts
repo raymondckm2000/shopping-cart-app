@@ -13,12 +13,28 @@ const resolvedUploadDir = process.env.UPLOAD_DIR
   ? path.resolve(serverRoot, process.env.UPLOAD_DIR)
   : path.resolve(serverRoot, 'uploads');
 
+const getRequiredEnvVar = (key: string): string => {
+  const value = process.env[key];
+
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+
+  return value;
+};
+
+let cachedDatabaseUrl: string | undefined;
+
 const env = {
   nodeEnv: process.env.NODE_ENV ?? 'production',
   port: Number(process.env.PORT ?? 3000),
-  databaseUrl:
-    process.env.DATABASE_URL ??
-    'mongodb+srv://raymondckm2000_db_user:NYKpt9WEEYEU15OF@cluster0.hyxlahl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+  get databaseUrl(): string {
+    if (cachedDatabaseUrl === undefined) {
+      cachedDatabaseUrl = getRequiredEnvVar('DATABASE_URL');
+    }
+
+    return cachedDatabaseUrl;
+  },
   jwtSecret: process.env.JWT_SECRET ?? 'mySuperSecretKey_123!@#',
   adminUsername: process.env.ADMIN_USERNAME ?? 'admin',
   adminPassword: process.env.ADMIN_PASSWORD ?? 'admin123',
