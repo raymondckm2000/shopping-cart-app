@@ -8,21 +8,6 @@ const __dirname = dirname(__filename);
 
 dotenv.config();
 
-const requireEnv = (key: string): string => {
-  const value = process.env[key];
-  if (typeof value !== 'string' || value.trim() === '') {
-    throw new Error(
-      `Missing required environment variable "${key}". Please provide a secure value before starting the server.`,
-    );
-  }
-
-  return value;
-};
-
-codex/update-jwt-config-with-fallback-defaults
-const nodeEnv = process.env.NODE_ENV ?? 'production';
-const isProduction = nodeEnv === 'production';
-=======
 const optionalEnv = (key: string): string | undefined => {
   const value = process.env[key];
   if (typeof value !== 'string') {
@@ -32,7 +17,9 @@ const optionalEnv = (key: string): string | undefined => {
   const trimmed = value.trim();
   return trimmed === '' ? undefined : value;
 };
- main
+
+const nodeEnv = process.env.NODE_ENV ?? 'production';
+const isProduction = nodeEnv === 'production';
 
 const serverRoot = path.resolve(__dirname, '..', '..');
 const resolvedUploadDir = process.env.UPLOAD_DIR
