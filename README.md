@@ -49,8 +49,7 @@ Use **Vercel / Render / Railway / Codex Cloud Project Settings** to configure ac
 
 ### Secure configuration & rotation checklist
 
-By default the server refuses to start unless `JWT_SECRET`, `ADMIN_USERNAME`, and `ADMIN_PASSWORD` are provided. Follow the checklist below for
-every environment:
+The server automatically boots even if `JWT_SECRET`, `ADMIN_USERNAME`, or `ADMIN_PASSWORD` are missing, but it falls back to development defaults and disables admin login until secure values are configured. Set `ALLOW_DEVELOPMENT_FALLBACKS=false` (or provide all three secrets) to enforce strict startup checks. Follow the checklist below for every environment:
 
 1. **Generate strong values**
    - JWT secret: `openssl rand -hex 64` (or an equivalent 64+ character random string generator).
@@ -71,7 +70,7 @@ For the Vite frontend, copy `client/.env.example` to `client/.env` and set `VITE
 
 ### Temporarily allowing development fallbacks in production
 
-If you need to bring the API online before the production secrets are ready (for example, while validating a new hosting environment), set `ALLOW_DEVELOPMENT_FALLBACKS=true`. When this override is active, the API boots with the development defaults, admin login stays disabled, and startup checks emit warnings reminding you to finish the secure setup.
+If you need to bring the API online before the production secrets are ready (for example, while validating a new hosting environment), simply deploy without the admin secrets. The API will use development defaults, disable admin login, and emit warnings reminding you to finish the secure setup. When you are ready to enforce strict checks again, either configure the real secrets or set `ALLOW_DEVELOPMENT_FALLBACKS=false` to block startup until they are present.
 
 ---
 

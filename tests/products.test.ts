@@ -124,7 +124,9 @@ const runFallbackAuthCheck = async () => {
   });
 };
 
-const runProductionFallbackAuthCheck = async () => {
+const runProductionFallbackAuthCheck = async (
+  options: { allowDevelopmentFallbacks?: 'true' | 'false' } = {},
+) => {
   const appModuleUrl = new URL('../server/src/app.ts', import.meta.url);
   const envModuleUrl = new URL('../server/src/config/env.ts', import.meta.url);
   const runtimeModuleUrl = new URL('../server/src/config/runtimeChecks.ts', import.meta.url);
@@ -183,7 +185,12 @@ const runProductionFallbackAuthCheck = async () => {
     });
   `;
 
-  const childEnv = { ...process.env, NODE_ENV: 'production', ALLOW_DEVELOPMENT_FALLBACKS: 'true' };
+  const childEnv = { ...process.env, NODE_ENV: 'production' } as Record<string, string | undefined>;
+  if (typeof options.allowDevelopmentFallbacks === 'string') {
+    childEnv.ALLOW_DEVELOPMENT_FALLBACKS = options.allowDevelopmentFallbacks;
+  } else {
+    delete childEnv.ALLOW_DEVELOPMENT_FALLBACKS;
+  }
   delete childEnv.JWT_SECRET;
   delete childEnv.ADMIN_USERNAME;
   delete childEnv.ADMIN_PASSWORD;
@@ -228,13 +235,76 @@ const runProductionFallbackAuthCheck = async () => {
   });
 };
 
+const runProductionStartupExpectingFailure = async () => {
+  const envModuleUrl = new URL('../server/src/config/env.ts', import.meta.url);
+
+  const script = `
+    import '${envModuleUrl.href}';
+  `;
+
+  const childEnv = {
+    ...process.env,
+    NODE_ENV: 'production',
+    ALLOW_DEVELOPMENT_FALLBACKS: 'false',
+  } as Record<string, string | undefined>;
+
+  delete childEnv.JWT_SECRET;
+  delete childEnv.ADMIN_USERNAME;
+  delete childEnv.ADMIN_PASSWORD;
+
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn(
+      process.execPath,
+      [path.join('server', 'node_modules', 'tsx', 'dist', 'cli.mjs'), '--eval', script],
+      {
+        cwd: process.cwd(),
+        env: childEnv,
+        stdio: ['ignore', 'pipe', 'pipe'],
+      },
+    );
+
+    let stderr = '';
+
+    child.stderr?.on('data', (chunk: Buffer | string) => {
+      stderr += chunk.toString();
+    });
+
+    child.on('error', (error) => {
+      reject(error);
+    });
+
+    child.on('close', (code) => {
+      try {
+        assert.notEqual(code, 0);
+        assert.match(
+          stderr,
+          /Missing required environment variable "JWT_SECRET"/,
+        );
+      } catch (error) {
+        reject(error);
+        return;
+      }
+
+      resolve();
+    });
+  });
+};
+
 describe('Admin authentication with fallback credentials', () => {
   it('rejects login attempts and allows startup when development defaults are active', async () => {
     await runFallbackAuthCheck();
   });
 
-  it('can opt into fallbacks in production via ALLOW_DEVELOPMENT_FALLBACKS', async () => {
+  it('auto enables fallbacks in production when secrets are missing', async () => {
     await runProductionFallbackAuthCheck();
+  });
+
+  it('can opt into fallbacks in production via ALLOW_DEVELOPMENT_FALLBACKS', async () => {
+    await runProductionFallbackAuthCheck({ allowDevelopmentFallbacks: 'true' });
+  });
+
+  it('fails fast in production when fallbacks are explicitly disabled', async () => {
+    await runProductionStartupExpectingFailure();
   });
 });
 
