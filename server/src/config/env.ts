@@ -19,8 +19,20 @@ const requireEnv = (key: string): string => {
   return value;
 };
 
+codex/update-jwt-config-with-fallback-defaults
 const nodeEnv = process.env.NODE_ENV ?? 'production';
 const isProduction = nodeEnv === 'production';
+=======
+const optionalEnv = (key: string): string | undefined => {
+  const value = process.env[key];
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed === '' ? undefined : value;
+};
+ main
 
 const serverRoot = path.resolve(__dirname, '..', '..');
 const resolvedUploadDir = process.env.UPLOAD_DIR
@@ -28,6 +40,7 @@ const resolvedUploadDir = process.env.UPLOAD_DIR
   : path.resolve(serverRoot, 'uploads');
 
 let cachedDatabaseUrl: string | undefined;
+let isDatabaseUrlLoaded = false;
 
 type FallbackKey = 'jwtSecret' | 'adminUsername' | 'adminPassword';
 
@@ -61,9 +74,10 @@ const getEnvOrDevelopmentFallback = (
 const env = {
   nodeEnv,
   port: Number(process.env.PORT ?? 3000),
-  get databaseUrl(): string {
-    if (cachedDatabaseUrl === undefined) {
-      cachedDatabaseUrl = requireEnv('DATABASE_URL');
+  get databaseUrl(): string | undefined {
+    if (!isDatabaseUrlLoaded) {
+      cachedDatabaseUrl = optionalEnv('DATABASE_URL');
+      isDatabaseUrlLoaded = true;
     }
 
     return cachedDatabaseUrl;
