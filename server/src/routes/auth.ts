@@ -18,6 +18,13 @@ router.post('/login', (req: express.Request, res: express.Response) => {
     return response.status(400).json({ message: 'username and password are required' });
   }
 
+  if (env.isUsingDevelopmentAdminCredentials) {
+    return response.status(503).json({
+      message:
+        'Admin login is disabled because development fallback credentials are in use. Configure ADMIN_USERNAME and ADMIN_PASSWORD before attempting to sign in.',
+    });
+  }
+
   if (username !== env.adminUsername || password !== env.adminPassword) {
     return response.status(401).json({ message: 'Invalid credentials' });
   }

@@ -10,14 +10,43 @@ export interface StartupCheckResult {
 }
 
 const sensitiveEnvVars: Array<{
-  key: string;
+  key: 'JWT_SECRET' | 'ADMIN_USERNAME' | 'ADMIN_PASSWORD';
   description: string;
   required: boolean;
+  fallbackActive: () => boolean;
+  fallbackMessage: string;
 }> = [
+codex/update-jwt-config-with-fallback-defaults
+  {
+    key: 'JWT_SECRET',
+    description: 'JWT secret',
+    required: true,
+    fallbackActive: () => env.isUsingDevelopmentJwtSecret,
+    fallbackMessage:
+      'JWT_SECRET is not set. Using the development fallback secret intended only for local testing.',
+  },
+  {
+    key: 'ADMIN_USERNAME',
+    description: 'Admin username',
+    required: true,
+    fallbackActive: () => env.isUsingDevelopmentAdminUsername,
+    fallbackMessage:
+      'ADMIN_USERNAME is not set. Using the development fallback username intended only for local testing.',
+  },
+  {
+    key: 'ADMIN_PASSWORD',
+    description: 'Admin password',
+    required: true,
+    fallbackActive: () => env.isUsingDevelopmentAdminPassword,
+    fallbackMessage:
+      'ADMIN_PASSWORD is not set. Using the development fallback password intended only for local testing.',
+  },
+=======
   { key: 'DATABASE_URL', description: 'Database connection string', required: false },
   { key: 'JWT_SECRET', description: 'JWT secret', required: true },
   { key: 'ADMIN_USERNAME', description: 'Admin username', required: true },
   { key: 'ADMIN_PASSWORD', description: 'Admin password', required: true },
+main
 ];
 
 export const performStartupChecks = (): StartupCheckResult[] => {
@@ -94,29 +123,46 @@ export const performStartupChecks = (): StartupCheckResult[] => {
     }
   }
 
-  sensitiveEnvVars
-    .filter(({ key }) => key !== 'DATABASE_URL')
-    .forEach(({ key, description, required }) => {
-      const value = process.env[key];
-      const trimmed = typeof value === 'string' ? value.trim() : '';
+  sensitiveEnvVars.forEach(({ key, description, required, fallbackActive, fallbackMessage }) => {
+    const value = process.env[key];
+    const trimmed = typeof value === 'string' ? value.trim() : '';
+    const usingFallback = fallbackActive();
 
-      if (!trimmed) {
+    if (!trimmed) {
+      if (usingFallback) {
         results.push({
           name: `env:${key}`,
-          status: required ? 'failed' : 'warning',
-          message: required
-            ? `${description} is required but not provided. Set ${key} to a secure value in the environment before starting the server.`
-            : `${description} is not set. Provide ${key} via the environment for production deployments.`,
+          status: 'warning',
+          message: `${fallbackMessage} Set ${key} to a secure value before deploying to production.`,
         });
         return;
       }
 
       results.push({
         name: `env:${key}`,
-        status: 'passed',
-        message: `${description} provided via environment variable.`,
+        status: required ? 'failed' : 'warning',
+        message: required
+          ? `${description} is required but not provided. Set ${key} to a secure value in the environment before starting the server.`
+          : `${description} is not set. Provide ${key} via the environment for production deployments.`,
       });
+      return;
+    }
+
+    if (usingFallback) {
+      results.push({
+        name: `env:${key}`,
+        status: 'warning',
+        message: `${fallbackMessage} Set ${key} to a secure value before deploying to production.`,
+      });
+      return;
+    }
+
+    results.push({
+      name: `env:${key}`,
+      status: 'passed',
+      message: `${description} provided via environment variable.`,
     });
+  });
 
   return results;
 };
