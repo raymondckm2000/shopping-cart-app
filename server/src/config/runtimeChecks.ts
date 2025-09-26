@@ -9,22 +9,15 @@ export interface StartupCheckResult {
   message?: string;
 }
 
-codex/enhance-security-for-admin-credentials
 const sensitiveEnvVars: Array<{
   key: string;
   description: string;
   required: boolean;
 }> = [
-  { key: 'DATABASE_URL', description: 'Database connection string', required: false },
+  { key: 'DATABASE_URL', description: 'Database connection string', required: true },
   { key: 'JWT_SECRET', description: 'JWT secret', required: true },
   { key: 'ADMIN_USERNAME', description: 'Admin username', required: true },
   { key: 'ADMIN_PASSWORD', description: 'Admin password', required: true },
-
-const sensitiveEnvVars: Array<{ key: string; description: string }> = [
-  { key: 'JWT_SECRET', description: 'JWT secret' },
-  { key: 'ADMIN_USERNAME', description: 'Admin username' },
-  { key: 'ADMIN_PASSWORD', description: 'Admin password' },
- main
 ];
 
 export const performStartupChecks = (): StartupCheckResult[] => {
@@ -53,16 +46,16 @@ export const performStartupChecks = (): StartupCheckResult[] => {
     if (!fs.existsSync(env.uploadDir)) {
       fs.mkdirSync(env.uploadDir, { recursive: true });
       uploadDirResult.status = 'warning';
-      uploadDirResult.message = `Upload directory \"${env.uploadDir}\" was missing and has been created automatically.`;
+      uploadDirResult.message = `Upload directory "${env.uploadDir}" was missing and has been created automatically.`;
     } else if (!fs.statSync(env.uploadDir).isDirectory()) {
       uploadDirResult.status = 'failed';
-      uploadDirResult.message = `Upload path \"${env.uploadDir}\" exists but is not a directory.`;
+      uploadDirResult.message = `Upload path "${env.uploadDir}" exists but is not a directory.`;
     } else {
-      uploadDirResult.message = `Upload directory resolved to \"${env.uploadDir}\".`;
+      uploadDirResult.message = `Upload directory resolved to "${env.uploadDir}".`;
     }
   } catch (error) {
     uploadDirResult.status = 'failed';
-    uploadDirResult.message = `Failed to access upload directory \"${env.uploadDir}\": ${
+    uploadDirResult.message = `Failed to access upload directory "${env.uploadDir}": ${
       error instanceof Error ? error.message : String(error)
     }`;
   }
@@ -72,13 +65,8 @@ export const performStartupChecks = (): StartupCheckResult[] => {
   results.push({
     name: 'NODE_ENV',
     status: 'passed',
-    message: `Running in \"${env.nodeEnv}\" mode.`,
+    message: `Running in "${env.nodeEnv}" mode.`,
   });
-
-codex/enhance-security-for-admin-credentials
-  sensitiveEnvVars.forEach(({ key, description, required }) => {
-    const value = process.env[key];
-    if (!value) {
 
   try {
     const databaseUrl = env.databaseUrl;
@@ -106,24 +94,29 @@ codex/enhance-security-for-admin-credentials
     });
   }
 
-  sensitiveEnvVars.forEach(({ key, description }) => {
-    if (!process.env[key]) {
-main
-      results.push({
-        name: `env:${key}`,
-        status: required ? 'failed' : 'warning',
-        message: required
-          ? `${description} is required but not provided. Set ${key} to a secure value in the environment before starting the server.`
-          : `${description} is not set. Provide ${key} via the environment for production deployments.`,
-      });
-    } else {
+  sensitiveEnvVars
+    .filter(({ key }) => key !== 'DATABASE_URL')
+    .forEach(({ key, description, required }) => {
+      const value = process.env[key];
+      const trimmed = typeof value === 'string' ? value.trim() : '';
+
+      if (!trimmed) {
+        results.push({
+          name: `env:${key}`,
+          status: required ? 'failed' : 'warning',
+          message: required
+            ? `${description} is required but not provided. Set ${key} to a secure value in the environment before starting the server.`
+            : `${description} is not set. Provide ${key} via the environment for production deployments.`,
+        });
+        return;
+      }
+
       results.push({
         name: `env:${key}`,
         status: 'passed',
         message: `${description} provided via environment variable.`,
       });
-    }
-  });
+    });
 
   return results;
 };
@@ -131,8 +124,7 @@ main
 export const logStartupCheckResults = (results: StartupCheckResult[]): void => {
   console.log('Running startup checks...');
   results.forEach((result) => {
-    const prefix =
-      result.status === 'passed' ? '✅' : result.status === 'warning' ? '⚠️' : '❌';
+    const prefix = result.status === 'passed' ? '✅' : result.status === 'warning' ? '⚠️' : '❌';
     if (result.message) {
       console.log(`${prefix} ${result.name}: ${result.message}`);
     } else {
