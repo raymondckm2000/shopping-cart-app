@@ -26,14 +26,36 @@ No local development is required. All code will be generated, updated, and maint
 ## 3. Environment
 Environment variables will be stored on **cloud deployment platforms** only.  
 
-Example `.env.example` file (committed to repo for reference):  
+Example `.env.example` file (committed to repo for reference):
 PORT=3000
 DATABASE_URL=mongodb+srv://<user>:<pass>@cluster.mongodb.net/shopping_cart
-JWT_SECRET=secret123
+JWT_SECRET=change-me
+ADMIN_USERNAME=change-me
+ADMIN_PASSWORD=change-me
 UPLOAD_DIR=uploads
 
-⚠️ Do not commit `.env` files with real secrets.  
+⚠️ Do not commit `.env` files with real secrets.
 Use **Vercel / Render / Railway / Codex Cloud Project Settings** to configure actual values.
+
+### Secure configuration & rotation checklist
+
+The server refuses to start unless `JWT_SECRET`, `ADMIN_USERNAME`, and `ADMIN_PASSWORD` are provided. Follow the checklist below for
+every environment:
+
+1. **Generate strong values**
+   - JWT secret: `openssl rand -hex 64` (or an equivalent 64+ character random string generator).
+   - Admin username: choose a non-default account name unique to your deployment.
+   - Admin password: generate a high-entropy password (e.g. `pwgen -sy 32 1` or a password manager).
+2. **Store the credentials** only inside the hosting provider's secret manager / environment configuration UI.
+3. **Deploy** after confirming the variables are present. Startup checks will fail the deploy if any of the required values are
+   missing.
+4. **Rotate regularly**:
+   - Schedule recurring reminders (e.g. quarterly) to regenerate all three values.
+   - Update the hosting provider's environment variables with the new values.
+   - Restart or redeploy the backend so the new configuration is loaded.
+   - Invalidate previously issued admin JWTs by logging out or waiting for the configured expiration (one hour by default).
+5. **Emergency rotation**: if compromise is suspected, immediately replace the values, redeploy, and review audit logs for
+   suspicious activity.
 
 For the Vite frontend, copy `client/.env.example` to `client/.env` and set `VITE_API_BASE_URL` to your backend URL (defaults to `http://localhost:3000/api`).  
 

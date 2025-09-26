@@ -9,11 +9,15 @@ export interface StartupCheckResult {
   message?: string;
 }
 
-const sensitiveEnvVars: Array<{ key: string; description: string }> = [
-  { key: 'DATABASE_URL', description: 'Database connection string' },
-  { key: 'JWT_SECRET', description: 'JWT secret' },
-  { key: 'ADMIN_USERNAME', description: 'Admin username' },
-  { key: 'ADMIN_PASSWORD', description: 'Admin password' },
+const sensitiveEnvVars: Array<{
+  key: string;
+  description: string;
+  required: boolean;
+}> = [
+  { key: 'DATABASE_URL', description: 'Database connection string', required: false },
+  { key: 'JWT_SECRET', description: 'JWT secret', required: true },
+  { key: 'ADMIN_USERNAME', description: 'Admin username', required: true },
+  { key: 'ADMIN_PASSWORD', description: 'Admin password', required: true },
 ];
 
 export const performStartupChecks = (): StartupCheckResult[] => {
@@ -64,12 +68,15 @@ export const performStartupChecks = (): StartupCheckResult[] => {
     message: `Running in \"${env.nodeEnv}\" mode.`,
   });
 
-  sensitiveEnvVars.forEach(({ key, description }) => {
-    if (!process.env[key]) {
+  sensitiveEnvVars.forEach(({ key, description, required }) => {
+    const value = process.env[key];
+    if (!value) {
       results.push({
         name: `env:${key}`,
-        status: 'warning',
-        message: `${description} is not set. Falling back to the default value defined in code.`,
+        status: required ? 'failed' : 'warning',
+        message: required
+          ? `${description} is required but not provided. Set ${key} to a secure value in the environment before starting the server.`
+          : `${description} is not set. Provide ${key} via the environment for production deployments.`,
       });
     } else {
       results.push({
