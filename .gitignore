@@ -5,6 +5,9 @@ dist/
 
 # Vite
 client/.vite/
+client/dist-types/
+client/tsconfig.node.tsbuildinfo
+client/tsconfig.tsbuildinfo
 
 # Env files
 .env
