@@ -42,11 +42,18 @@ const parseOptionalBoolean = (key: string): boolean | undefined => {
 const nodeEnv = process.env.NODE_ENV ?? 'production';
 const isProduction = nodeEnv === 'production';
 
-const allowDevelopmentFallbacksOverride = parseOptionalBoolean('ALLOW_DEVELOPMENT_FALLBACKS');
+const allowDevelopmentFallbacksOverride = parseOptionalBoolean(
+  'ALLOW_DEVELOPMENT_FALLBACKS',
+);
+
 const areDevelopmentFallbacksAllowed =
-  allowDevelopmentFallbacksOverride ?? !isProduction;
+  typeof allowDevelopmentFallbacksOverride === 'boolean'
+    ? allowDevelopmentFallbacksOverride
+    : true;
+
 const allowDevelopmentFallbacksInProduction =
   isProduction && areDevelopmentFallbacksAllowed;
+
 const shouldEnforceRequiredSecrets = !areDevelopmentFallbacksAllowed;
 
 const serverRoot = path.resolve(__dirname, '..', '..');
