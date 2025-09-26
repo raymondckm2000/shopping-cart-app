@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import type { Server } from 'node:http';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
@@ -12,6 +13,112 @@ process.env.ADMIN_PASSWORD ??= 'integration-password';
 const { default: env } = await import('../server/src/config/env');
 const { default: createApp } = await import('../server/src/app');
 const { default: productsStore } = await import('../server/src/store/productsStore');
+
+const runFallbackAuthCheck = async () => {
+  const appModuleUrl = new URL('../server/src/app.ts', import.meta.url);
+  const envModuleUrl = new URL('../server/src/config/env.ts', import.meta.url);
+  const runtimeModuleUrl = new URL('../server/src/config/runtimeChecks.ts', import.meta.url);
+
+  const fallbackScript = `
+    import assert from 'node:assert/strict';
+    import { once } from 'node:events';
+    import createApp from '${appModuleUrl.href}';
+    import env from '${envModuleUrl.href}';
+    import { hasBlockingStartupFailure, performStartupChecks } from '${runtimeModuleUrl.href}';
+
+    const run = async () => {
+      const app = createApp();
+      const server = app.listen(0);
+
+      try {
+        await once(server, 'listening');
+
+        const address = server.address();
+        if (!address || typeof address === 'string') {
+          throw new Error('Unable to determine server address');
+        }
+
+        const baseUrl = 'http://127.0.0.1:' + address.port;
+        const response = await fetch(baseUrl + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: env.adminUsername, password: env.adminPassword }),
+        });
+
+        assert.equal(response.status, 503);
+        const body = await response.json();
+        assert.match(body.message, /fallback credentials/i);
+
+        const startupResults = performStartupChecks();
+        assert.equal(hasBlockingStartupFailure(startupResults), false);
+
+        const jwtCheck = startupResults.find((result) => result.name === 'env:JWT_SECRET');
+        assert.ok(jwtCheck && jwtCheck.status === 'warning');
+
+        const adminUserCheck = startupResults.find((result) => result.name === 'env:ADMIN_USERNAME');
+        assert.ok(adminUserCheck && adminUserCheck.status === 'warning');
+
+        const adminPasswordCheck = startupResults.find((result) => result.name === 'env:ADMIN_PASSWORD');
+        assert.ok(adminPasswordCheck && adminPasswordCheck.status === 'warning');
+      } finally {
+        server.close();
+        await once(server, 'close');
+      }
+    };
+
+    run().catch((error) => {
+      console.error(error);
+      process.exitCode = 1;
+    });
+  `;
+
+  const childEnv = { ...process.env, NODE_ENV: 'test' };
+  delete childEnv.JWT_SECRET;
+  delete childEnv.ADMIN_USERNAME;
+  delete childEnv.ADMIN_PASSWORD;
+  childEnv.DATABASE_URL ??= 'postgres://integration-test/fallback';
+
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn(process.execPath, [
+      path.join('server', 'node_modules', 'tsx', 'dist', 'cli.mjs'),
+      '--eval',
+      fallbackScript,
+    ], {
+      cwd: process.cwd(),
+      env: childEnv,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    child.stdout?.on('data', (chunk: Buffer | string) => {
+      stdout += chunk.toString();
+    });
+
+    child.stderr?.on('data', (chunk: Buffer | string) => {
+      stderr += chunk.toString();
+    });
+
+    child.on('error', (error) => {
+      reject(error);
+    });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`Fallback auth check failed with exit code ${code}.\nstdout:\n${stdout}\nstderr:\n${stderr}`));
+      }
+    });
+  });
+};
+
+describe('Admin authentication with fallback credentials', () => {
+  it('rejects login attempts and allows startup when development defaults are active', async () => {
+    await runFallbackAuthCheck();
+  });
+});
 
 const cleanupUploads = async () => {
   try {
