@@ -19,19 +19,31 @@ const requireEnv = (key: string): string => {
   return value;
 };
 
+const optionalEnv = (key: string): string | undefined => {
+  const value = process.env[key];
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed === '' ? undefined : value;
+};
+
 const serverRoot = path.resolve(__dirname, '..', '..');
 const resolvedUploadDir = process.env.UPLOAD_DIR
   ? path.resolve(serverRoot, process.env.UPLOAD_DIR)
   : path.resolve(serverRoot, 'uploads');
 
 let cachedDatabaseUrl: string | undefined;
+let isDatabaseUrlLoaded = false;
 
 const env = {
   nodeEnv: process.env.NODE_ENV ?? 'production',
   port: Number(process.env.PORT ?? 3000),
-  get databaseUrl(): string {
-    if (cachedDatabaseUrl === undefined) {
-      cachedDatabaseUrl = requireEnv('DATABASE_URL');
+  get databaseUrl(): string | undefined {
+    if (!isDatabaseUrlLoaded) {
+      cachedDatabaseUrl = optionalEnv('DATABASE_URL');
+      isDatabaseUrlLoaded = true;
     }
 
     return cachedDatabaseUrl;
