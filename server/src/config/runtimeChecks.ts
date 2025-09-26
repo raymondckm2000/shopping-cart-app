@@ -16,7 +16,6 @@ const sensitiveEnvVars: Array<{
   fallbackActive: () => boolean;
   fallbackMessage: string;
 }> = [
-codex/update-jwt-config-with-fallback-defaults
   {
     key: 'JWT_SECRET',
     description: 'JWT secret',
@@ -41,12 +40,6 @@ codex/update-jwt-config-with-fallback-defaults
     fallbackMessage:
       'ADMIN_PASSWORD is not set. Using the development fallback password intended only for local testing.',
   },
-=======
-  { key: 'DATABASE_URL', description: 'Database connection string', required: false },
-  { key: 'JWT_SECRET', description: 'JWT secret', required: true },
-  { key: 'ADMIN_USERNAME', description: 'Admin username', required: true },
-  { key: 'ADMIN_PASSWORD', description: 'Admin password', required: true },
-main
 ];
 
 export const performStartupChecks = (): StartupCheckResult[] => {
