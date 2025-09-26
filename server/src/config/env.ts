@@ -18,8 +18,36 @@ const optionalEnv = (key: string): string | undefined => {
   return trimmed === '' ? undefined : value;
 };
 
+const parseOptionalBoolean = (key: string): boolean | undefined => {
+  const rawValue = optionalEnv(key);
+  if (typeof rawValue === 'undefined') {
+    return undefined;
+  }
+
+  const normalized = rawValue.trim().toLowerCase();
+
+  if (['1', 'true', 'yes', 'on'].includes(normalized)) {
+    return true;
+  }
+
+  if (['0', 'false', 'no', 'off'].includes(normalized)) {
+    return false;
+  }
+
+  throw new Error(
+    `Invalid boolean value for "${key}": "${rawValue}". Expected one of true,false,1,0,yes,no,on,off.`,
+  );
+};
+
 const nodeEnv = process.env.NODE_ENV ?? 'production';
 const isProduction = nodeEnv === 'production';
+
+const allowDevelopmentFallbacksOverride = parseOptionalBoolean('ALLOW_DEVELOPMENT_FALLBACKS');
+const areDevelopmentFallbacksAllowed =
+  allowDevelopmentFallbacksOverride ?? !isProduction;
+const allowDevelopmentFallbacksInProduction =
+  isProduction && areDevelopmentFallbacksAllowed;
+const shouldEnforceRequiredSecrets = !areDevelopmentFallbacksAllowed;
 
 const serverRoot = path.resolve(__dirname, '..', '..');
 const resolvedUploadDir = process.env.UPLOAD_DIR
@@ -48,7 +76,7 @@ const getEnvOrDevelopmentFallback = (
     return value;
   }
 
-  if (isProduction) {
+  if (shouldEnforceRequiredSecrets) {
     throw new Error(
       `Missing required environment variable "${key}". Please provide a secure value before starting the server.`,
     );
@@ -60,6 +88,9 @@ const getEnvOrDevelopmentFallback = (
 
 const env = {
   nodeEnv,
+  areDevelopmentFallbacksAllowed,
+  allowDevelopmentFallbacksInProduction,
+  isStrictSecretEnforcementEnabled: shouldEnforceRequiredSecrets,
   port: Number(process.env.PORT ?? 3000),
   get databaseUrl(): string | undefined {
     if (!isDatabaseUrlLoaded) {
