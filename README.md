@@ -139,7 +139,19 @@ README.md
 
 ---
 
-## 10. Render Troubleshooting
+## 10. Vercel Troubleshooting
+- **Direct route navigation returns 404**
+  - Confirm the Vercel project root is set to the `client/` directory so `client/vercel.json` is discovered during builds.
+  - The config contains a catch-all rewrite (`/(.*) → /index.html`) that ensures `/admin` and other client-side routes serve the SPA instead of Vercel's 404 page.
+  - If the project root cannot be changed, copy the rewrite config to a `vercel.json` at the repository root and redeploy.
+- **General deployment checklist**
+  - Run `npm run build` inside `client/` locally or in CI to catch build errors before deploying to Vercel.
+  - Ensure `VITE_API_BASE_URL` in `client/.env` points to the live backend URL (e.g. Render or Railway) before triggering a production build.
+  - Verify environment variables and rewrites after every framework upgrade, because Vercel may require a clean redeploy for the changes to apply.
+
+---
+
+## 11. Render Troubleshooting
 - **Accessing logs after a failed deploy**
   - Open the service in the [Render Dashboard](https://dashboard.render.com/), select the failing deploy from the **Events** tab, and inspect the real-time logs at the bottom of the page.
   - Alternatively install the [Render CLI](https://render.com/docs/render-cli) and run `render login`, then fetch logs with `render logs --service <service-id> --tail` to stream the most recent output from the instance.
