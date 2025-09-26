@@ -9,6 +9,7 @@ export interface StartupCheckResult {
   message?: string;
 }
 
+codex/enhance-security-for-admin-credentials
 const sensitiveEnvVars: Array<{
   key: string;
   description: string;
@@ -18,6 +19,12 @@ const sensitiveEnvVars: Array<{
   { key: 'JWT_SECRET', description: 'JWT secret', required: true },
   { key: 'ADMIN_USERNAME', description: 'Admin username', required: true },
   { key: 'ADMIN_PASSWORD', description: 'Admin password', required: true },
+
+const sensitiveEnvVars: Array<{ key: string; description: string }> = [
+  { key: 'JWT_SECRET', description: 'JWT secret' },
+  { key: 'ADMIN_USERNAME', description: 'Admin username' },
+  { key: 'ADMIN_PASSWORD', description: 'Admin password' },
+ main
 ];
 
 export const performStartupChecks = (): StartupCheckResult[] => {
@@ -68,9 +75,40 @@ export const performStartupChecks = (): StartupCheckResult[] => {
     message: `Running in \"${env.nodeEnv}\" mode.`,
   });
 
+codex/enhance-security-for-admin-credentials
   sensitiveEnvVars.forEach(({ key, description, required }) => {
     const value = process.env[key];
     if (!value) {
+
+  try {
+    const databaseUrl = env.databaseUrl;
+    results.push({
+      name: 'env:DATABASE_URL',
+      status: 'passed',
+      message: 'Database connection string provided via environment variable.',
+    });
+
+    if (!databaseUrl.trim()) {
+      results.push({
+        name: 'env:DATABASE_URL format',
+        status: 'warning',
+        message: 'DATABASE_URL is empty after trimming whitespace.',
+      });
+    }
+  } catch (error) {
+    results.push({
+      name: 'env:DATABASE_URL',
+      status: 'failed',
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Missing required environment variable: DATABASE_URL',
+    });
+  }
+
+  sensitiveEnvVars.forEach(({ key, description }) => {
+    if (!process.env[key]) {
+main
       results.push({
         name: `env:${key}`,
         status: required ? 'failed' : 'warning',
