@@ -90,6 +90,30 @@ export const performStartupChecks = (): StartupCheckResult[] => {
     message: `Running in "${env.nodeEnv}" mode.`,
   });
 
+  if (env.isStrictSecretEnforcementEnabled) {
+    results.push({
+      name: 'Secret enforcement mode',
+      status: 'passed',
+      message:
+        env.nodeEnv === 'production'
+          ? 'Production startup requires secure JWT and admin credentials.'
+          : 'Strict secret enforcement is enabled despite NODE_ENV not being "production".',
+    });
+  } else if (env.allowDevelopmentFallbacksInProduction) {
+    results.push({
+      name: 'Secret enforcement mode',
+      status: 'warning',
+      message:
+        'Development fallbacks are enabled while NODE_ENV is "production". Admin login remains disabled until secure credentials are configured.',
+    });
+  } else {
+    results.push({
+      name: 'Secret enforcement mode',
+      status: 'warning',
+      message: 'Development fallbacks are enabled because NODE_ENV is not "production".',
+    });
+  }
+
   {
     const databaseUrl = env.databaseUrl;
     if (typeof databaseUrl === 'string') {
