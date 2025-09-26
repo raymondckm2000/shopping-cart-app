@@ -26,20 +26,22 @@ No local development is required. All code will be generated, updated, and maint
 ## 3. Environment
 Environment variables will be stored on **cloud deployment platforms** only.
 
-> **Important:** The backend will refuse to start if `DATABASE_URL` is not supplied. Configure this value in your deployment (or
-> local `.env`) before booting the API.
+> **Important:** Until database persistence is wired up, `DATABASE_URL` is optional. When it is omitted the API runs with in-memory
+> data only, and the startup checks emit a warning instead of blocking the boot process. Provide a valid connection string once
+> you are ready to integrate MongoDB (or another backing store).
+
+To re-enable the strict requirement after the database is connected:
+
+1. Set `DATABASE_URL` in your deployment environment (or local `.env`).
+2. Update `server/src/config/env.ts` so `databaseUrl` once again calls `requireEnv('DATABASE_URL')`.
+3. Adjust the `env:DATABASE_URL` check in `server/src/config/runtimeChecks.ts` to treat a missing value as a failure.
 
 Example `.env.example` file (committed to repo for reference):
 PORT=3000
-codex/enhance-security-for-admin-credentials
-DATABASE_URL=mongodb+srv://<user>:<pass>@cluster.mongodb.net/shopping_cart
+DATABASE_URL=mongodb+srv://<user>:<pass>@cluster.mongodb.net/shopping_cart # Optional until persistence is enabled
 JWT_SECRET=change-me
 ADMIN_USERNAME=change-me
 ADMIN_PASSWORD=change-me
-=======
-DATABASE_URL=mongodb+srv://<user>:<pass>@cluster.mongodb.net/shopping_cart # Required
-JWT_SECRET=secret123
- main
 UPLOAD_DIR=uploads
 
 ⚠️ Do not commit `.env` files with real secrets.

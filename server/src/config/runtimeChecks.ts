@@ -14,7 +14,7 @@ const sensitiveEnvVars: Array<{
   description: string;
   required: boolean;
 }> = [
-  { key: 'DATABASE_URL', description: 'Database connection string', required: true },
+  { key: 'DATABASE_URL', description: 'Database connection string', required: false },
   { key: 'JWT_SECRET', description: 'JWT secret', required: true },
   { key: 'ADMIN_USERNAME', description: 'Admin username', required: true },
   { key: 'ADMIN_PASSWORD', description: 'Admin password', required: true },
@@ -68,30 +68,30 @@ export const performStartupChecks = (): StartupCheckResult[] => {
     message: `Running in "${env.nodeEnv}" mode.`,
   });
 
-  try {
+  {
     const databaseUrl = env.databaseUrl;
-    results.push({
-      name: 'env:DATABASE_URL',
-      status: 'passed',
-      message: 'Database connection string provided via environment variable.',
-    });
-
-    if (!databaseUrl.trim()) {
+    if (typeof databaseUrl === 'string') {
       results.push({
-        name: 'env:DATABASE_URL format',
+        name: 'env:DATABASE_URL',
+        status: 'passed',
+        message: 'Database connection string provided via environment variable.',
+      });
+
+      if (!databaseUrl.trim()) {
+        results.push({
+          name: 'env:DATABASE_URL format',
+          status: 'warning',
+          message: 'DATABASE_URL is empty after trimming whitespace.',
+        });
+      }
+    } else {
+      results.push({
+        name: 'env:DATABASE_URL',
         status: 'warning',
-        message: 'DATABASE_URL is empty after trimming whitespace.',
+        message:
+          'DATABASE_URL is not set. Persistence-related features remain disabled until a database is configured.',
       });
     }
-  } catch (error) {
-    results.push({
-      name: 'env:DATABASE_URL',
-      status: 'failed',
-      message:
-        error instanceof Error
-          ? error.message
-          : 'Missing required environment variable: DATABASE_URL',
-    });
   }
 
   sensitiveEnvVars
