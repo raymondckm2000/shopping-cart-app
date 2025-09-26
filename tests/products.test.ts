@@ -5,9 +5,13 @@ import { once } from 'node:events';
 import type { Server } from 'node:http';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 
-import env from '../server/src/config/env';
-import createApp from '../server/src/app';
-import productsStore from '../server/src/store/productsStore';
+process.env.JWT_SECRET ??= 'integration-test-secret';
+process.env.ADMIN_USERNAME ??= 'integration-admin';
+process.env.ADMIN_PASSWORD ??= 'integration-password';
+
+const { default: env } = await import('../server/src/config/env');
+const { default: createApp } = await import('../server/src/app');
+const { default: productsStore } = await import('../server/src/store/productsStore');
 
 const cleanupUploads = async () => {
   try {
