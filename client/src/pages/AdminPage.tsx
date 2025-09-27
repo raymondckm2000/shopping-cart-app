@@ -7,6 +7,7 @@ import {
   updateProduct,
   type Product,
 } from '../lib/api';
+import { deleteCookie, getCookie, setCookie } from '../lib/cookies';
 
 type ProductFormState = {
   name: string;
@@ -24,11 +25,14 @@ const emptyFormState: ProductFormState = {
   imageFile: null,
 };
 
+const TOKEN_COOKIE_NAME = 'admin_token';
+const TOKEN_COOKIE_MAX_AGE_SECONDS = 60 * 60;
+
 const AdminPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(() => getCookie(TOKEN_COOKIE_NAME));
   const [loginError, setLoginError] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
@@ -40,6 +44,18 @@ const AdminPage = () => {
   const [isSavingProduct, setIsSavingProduct] = useState(false);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [fileInputKey, setFileInputKey] = useState(0);
+
+  useEffect(() => {
+    if (token) {
+      setCookie(TOKEN_COOKIE_NAME, token, {
+        maxAgeSeconds: TOKEN_COOKIE_MAX_AGE_SECONDS,
+        sameSite: 'strict',
+        path: '/',
+      });
+    } else {
+      deleteCookie(TOKEN_COOKIE_NAME);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (!token) {
@@ -233,6 +249,7 @@ const AdminPage = () => {
 
   const handleLogout = () => {
     setToken(null);
+    deleteCookie(TOKEN_COOKIE_NAME);
     setProducts([]);
     resetForm();
     setLoginError(null);
