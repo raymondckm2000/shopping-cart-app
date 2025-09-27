@@ -94,8 +94,9 @@ README.md
 - [x] Customer: Browse products with images, name, price  
 - [x] Customer: Add/remove/update items in cart  
 - [x] Customer: Checkout flow (address + payment placeholder)  
-- [ ] Admin: Login/Logout with JWT  
-- [ ] Admin: Add/Edit/Delete products  
+- [ ] Admin: Login/Logout with JWT
+- [x] Admin: Add/Edit products (dashboard + API)
+- [ ] Admin: Delete products
 - [ ] Admin: Upload product images  
 - [ ] System: Store data in MongoDB Atlas  
 - [x] System: Responsive UI (mobile + desktop)  
