@@ -49,7 +49,7 @@ const allowDevelopmentFallbacksOverride = parseOptionalBoolean(
 const areDevelopmentFallbacksAllowed =
   typeof allowDevelopmentFallbacksOverride === 'boolean'
     ? allowDevelopmentFallbacksOverride
-    : true;
+    : !isProduction;
 
 const allowDevelopmentFallbacksInProduction =
   isProduction && areDevelopmentFallbacksAllowed;

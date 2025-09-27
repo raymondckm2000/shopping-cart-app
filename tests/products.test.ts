@@ -213,11 +213,8 @@ const runProductionFallbackAuthCheck = async (
   `;
 
   const childEnv = { ...process.env, NODE_ENV: 'production' } as Record<string, string | undefined>;
-  if (typeof options.allowDevelopmentFallbacks === 'string') {
-    childEnv.ALLOW_DEVELOPMENT_FALLBACKS = options.allowDevelopmentFallbacks;
-  } else {
-    delete childEnv.ALLOW_DEVELOPMENT_FALLBACKS;
-  }
+  const fallbackPreference = options.allowDevelopmentFallbacks ?? 'true';
+  childEnv.ALLOW_DEVELOPMENT_FALLBACKS = fallbackPreference;
   delete childEnv.JWT_SECRET;
   delete childEnv.ADMIN_USERNAME;
   delete childEnv.ADMIN_PASSWORD;
@@ -262,7 +259,9 @@ const runProductionFallbackAuthCheck = async (
   });
 };
 
-const runProductionStartupExpectingFailure = async () => {
+const runProductionStartupExpectingFailure = async (
+  options: { allowDevelopmentFallbacks?: 'true' | 'false' } = {},
+) => {
   const envModuleUrl = new URL('../server/src/config/env.ts', import.meta.url);
 
   const script = `
@@ -272,8 +271,13 @@ const runProductionStartupExpectingFailure = async () => {
   const childEnv = {
     ...process.env,
     NODE_ENV: 'production',
-    ALLOW_DEVELOPMENT_FALLBACKS: 'false',
   } as Record<string, string | undefined>;
+
+  if (typeof options.allowDevelopmentFallbacks === 'string') {
+    childEnv.ALLOW_DEVELOPMENT_FALLBACKS = options.allowDevelopmentFallbacks;
+  } else {
+    delete childEnv.ALLOW_DEVELOPMENT_FALLBACKS;
+  }
 
   delete childEnv.JWT_SECRET;
   delete childEnv.ADMIN_USERNAME;
@@ -322,16 +326,16 @@ describe('Admin authentication with fallback credentials', () => {
     await runFallbackAuthCheck();
   });
 
-  it('auto enables fallbacks in production when secrets are missing', async () => {
-    await runProductionFallbackAuthCheck();
-  });
-
   it('can opt into fallbacks in production via ALLOW_DEVELOPMENT_FALLBACKS', async () => {
     await runProductionFallbackAuthCheck({ allowDevelopmentFallbacks: 'true' });
   });
 
-  it('fails fast in production when fallbacks are explicitly disabled', async () => {
+  it('fails fast in production when fallbacks are not explicitly allowed', async () => {
     await runProductionStartupExpectingFailure();
+  });
+
+  it('fails fast in production when fallbacks are explicitly disabled', async () => {
+    await runProductionStartupExpectingFailure({ allowDevelopmentFallbacks: 'false' });
   });
 });
 
