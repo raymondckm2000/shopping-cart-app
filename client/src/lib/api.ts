@@ -29,13 +29,37 @@ export class ApiError extends Error {
   }
 }
 
+const headersToObject = (headers?: HeadersInit): Record<string, string> => {
+  if (!headers) {
+    return {};
+  }
+
+  if (headers instanceof Headers) {
+    return Object.fromEntries(headers.entries());
+  }
+
+  if (Array.isArray(headers)) {
+    return Object.fromEntries(headers);
+  }
+
+  return { ...(headers as Record<string, string>) };
+};
+
 const fetchJson = async <T>(path: string, init?: RequestInit): Promise<T> => {
+  const bodyIsFormData = init?.body instanceof FormData;
+  const headers = headersToObject(init?.headers);
+
+  if (!bodyIsFormData && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  if (bodyIsFormData) {
+    delete headers['Content-Type'];
+  }
+
   const response = await fetch(`${baseUrl}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(init?.headers ?? {}),
-    },
     ...init,
+    headers,
   });
 
   if (!response.ok) {
@@ -86,5 +110,84 @@ export const login = async ({ username, password }: LoginRequest): Promise<Login
   return fetchJson<LoginResponse>('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ username, password }),
+  });
+};
+
+interface ProductInput {
+  name: string;
+  description?: string;
+  price: number;
+  stock?: number;
+  imageFile?: File | null;
+}
+
+const createProductFormData = ({
+  name,
+  description,
+  price,
+  stock,
+  imageFile,
+}: ProductInput) => {
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('price', String(price));
+
+  if (typeof description === 'string' && description.trim() !== '') {
+    formData.append('description', description);
+  }
+
+  if (typeof stock === 'number') {
+    formData.append('stock', String(stock));
+  }
+
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+
+  return formData;
+};
+
+export const createProduct = async (
+  input: ProductInput,
+  token: string,
+): Promise<Product> => {
+  if (!token) {
+    throw new ApiError('Admin token is required', 401);
+  }
+
+  const formData = createProductFormData(input);
+
+  return fetchJson<Product>('/products', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const updateProduct = async (
+  id: string,
+  input: ProductInput,
+  token: string,
+): Promise<Product> => {
+  const trimmedId = id.trim();
+
+  if (!trimmedId) {
+    throw new ApiError('Product id is required', 400);
+  }
+
+  if (!token) {
+    throw new ApiError('Admin token is required', 401);
+  }
+
+  const formData = createProductFormData(input);
+
+  return fetchJson<Product>(`/products/${trimmedId}`, {
+    method: 'PUT',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
