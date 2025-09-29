@@ -7,9 +7,37 @@ export interface Product {
   imageUrl?: string;
 }
 
+const fallbackOrigin =
+  typeof window !== 'undefined' && window.location?.origin
+    ? window.location.origin
+    : 'http://localhost';
+
 const rawBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
-const normalizedBaseUrl = rawBaseUrl.replace(/\/$/, '');
-const baseUrl = normalizedBaseUrl || '/api';
+const parsedBaseUrl = new URL(rawBaseUrl || '/api', fallbackOrigin);
+const normalizedBaseUrl = parsedBaseUrl.href.replace(/\/$/, '');
+const baseUrl = normalizedBaseUrl;
+const apiOrigin = parsedBaseUrl.origin;
+
+export const resolveImageUrl = (imageUrl?: string): string | undefined => {
+  if (!imageUrl) {
+    return imageUrl;
+  }
+
+  if (/^[a-zA-Z][a-zA-Z+.-]*:/.test(imageUrl) || imageUrl.startsWith('//')) {
+    return imageUrl;
+  }
+
+  if (imageUrl.startsWith('/uploads/')) {
+    return `${apiOrigin}${imageUrl}`;
+  }
+
+  return imageUrl;
+};
+
+const withResolvedImageUrl = (product: Product): Product => ({
+  ...product,
+  imageUrl: resolveImageUrl(product.imageUrl),
+});
 
 interface LoginRequest {
   username: string;
@@ -74,7 +102,8 @@ const fetchJson = async <T>(path: string, init?: RequestInit): Promise<T> => {
 };
 
 export const getProducts = async (): Promise<Product[]> => {
-  return fetchJson<Product[]>('/products');
+  const products = await fetchJson<Product[]>('/products');
+  return products.map(withResolvedImageUrl);
 };
 
 export const getProduct = async (id: string): Promise<Product> => {
@@ -85,7 +114,8 @@ export const getProduct = async (id: string): Promise<Product> => {
   }
 
   try {
-    return await fetchJson<Product>(`/products/${trimmedId}`);
+    const product = await fetchJson<Product>(`/products/${trimmedId}`);
+    return withResolvedImageUrl(product);
   } catch (error) {
     if (error instanceof ApiError && error.status !== 404) {
       throw error;
@@ -98,7 +128,7 @@ export const getProduct = async (id: string): Promise<Product> => {
       throw new ApiError('Product not found', 404);
     }
 
-    return product;
+    return withResolvedImageUrl(product);
   }
 };
 
