@@ -409,7 +409,7 @@ a:hover {
   position: relative;
   border-radius: 1rem;
   overflow: hidden;
-  min-height: 220px;
+  min-height: 330px;
   background: linear-gradient(135deg, #1e3a8a, #9333ea);
   color: #f8fafc;
   display: flex;
@@ -455,20 +455,24 @@ a:hover {
 
 .home-hero {
   position: relative;
-  border-radius: 1.5rem;
   overflow: hidden;
   background: linear-gradient(135deg, #1d4ed8, #7c3aed);
   color: #f8fafc;
-  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 3.5rem);
+  padding: clamp(4.5rem, 9vw, 7.5rem) clamp(1.5rem, 5vw, 3.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0.5rem;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+  max-width: none;
 }
 
 .home-hero--with-image {
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 .home-hero__overlay {
@@ -478,7 +482,7 @@ a:hover {
 }
 
 .home-hero--with-image .home-hero__overlay {
-  background: rgba(15, 23, 42, 0.6);
+  background: transparent;
 }
 
 .home-hero__content {

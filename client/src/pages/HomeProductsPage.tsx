@@ -111,7 +111,7 @@ const HomeProductsPage = () => {
         className={`home-hero${heroHasImage ? ' home-hero--with-image' : ''}`}
         style={heroHasImage ? { backgroundImage: `url(${heroSettings?.backgroundImageUrl})` } : undefined}
       >
-        <div className="home-hero__overlay" aria-hidden="true" />
+        {!heroHasImage && <div className="home-hero__overlay" aria-hidden="true" />}
         <div className="home-hero__content">
           <p className="home-hero__copy">{heroCopy}</p>
         </div>
