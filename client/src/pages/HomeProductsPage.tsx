@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import type { CSSProperties } from 'react';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/CartContext';
 import { getHeroSettings, getProducts, type HeroSettings, type Product } from '../lib/api';
@@ -12,6 +13,7 @@ const HomeProductsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_BATCH);
   const [heroSettings, setHeroSettings] = useState<HeroSettings | null>(null);
+  const [heroAspectRatio, setHeroAspectRatio] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -100,17 +102,59 @@ const HomeProductsPage = () => {
     [],
   );
 
+  useEffect(() => {
+    const imageUrl = heroSettings?.backgroundImageUrl;
+
+    if (!imageUrl) {
+      setHeroAspectRatio(null);
+      return;
+    }
+
+    let cancelled = false;
+    const image = new Image();
+
+    const handleLoad = () => {
+      if (!cancelled && image.naturalWidth && image.naturalHeight) {
+        setHeroAspectRatio(image.naturalWidth / image.naturalHeight);
+      }
+    };
+
+    const handleError = () => {
+      if (!cancelled) {
+        setHeroAspectRatio(null);
+      }
+    };
+
+    image.addEventListener('load', handleLoad);
+    image.addEventListener('error', handleError);
+    image.src = imageUrl;
+
+    return () => {
+      cancelled = true;
+      image.removeEventListener('load', handleLoad);
+      image.removeEventListener('error', handleError);
+    };
+  }, [heroSettings?.backgroundImageUrl]);
+
   const heroCopy = heroSettings?.copy?.trim()
     ? heroSettings.copy
     : 'Discover products curated to brighten your day and elevate your routine.';
   const heroHasImage = Boolean(heroSettings?.backgroundImageUrl);
 
+  const heroStyle = useMemo<CSSProperties | undefined>(() => {
+    if (!heroHasImage) {
+      return undefined;
+    }
+
+    return {
+      backgroundImage: `url(${heroSettings?.backgroundImageUrl ?? ''})`,
+      aspectRatio: heroAspectRatio ? `${heroAspectRatio}` : undefined,
+    };
+  }, [heroHasImage, heroSettings?.backgroundImageUrl, heroAspectRatio]);
+
   return (
     <section className="page">
-      <div
-        className={`home-hero${heroHasImage ? ' home-hero--with-image' : ''}`}
-        style={heroHasImage ? { backgroundImage: `url(${heroSettings?.backgroundImageUrl})` } : undefined}
-      >
+      <div className={`home-hero${heroHasImage ? ' home-hero--with-image' : ''}`} style={heroStyle}>
         {!heroHasImage && <div className="home-hero__overlay" aria-hidden="true" />}
         <div className="home-hero__content">
           <p className="home-hero__copy">{heroCopy}</p>
