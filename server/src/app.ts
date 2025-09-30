@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import env from './config/env.js';
 import healthRouter from './routes/health.js';
 import productsRouter from './routes/products.js';
+import heroRouter from './routes/hero.js';
 import authRouter from './routes/auth.js';
 
 export const createApp = () => {
@@ -35,6 +36,7 @@ export const createApp = () => {
   app.use('/api/auth', authRouter);
   app.use('/api/health', healthRouter);
   app.use('/api/products', productsRouter);
+  app.use('/api/hero', heroRouter);
 
   return app;
 };

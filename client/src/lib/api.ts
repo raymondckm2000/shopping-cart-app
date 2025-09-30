@@ -7,6 +7,11 @@ export interface Product {
   imageUrl?: string;
 }
 
+export interface HeroSettings {
+  copy: string;
+  backgroundImageUrl?: string;
+}
+
 const fallbackOrigin =
   typeof window !== 'undefined' && window.location?.origin
     ? window.location.origin
@@ -37,6 +42,11 @@ export const resolveImageUrl = (imageUrl?: string): string | undefined => {
 const withResolvedImageUrl = (product: Product): Product => ({
   ...product,
   imageUrl: resolveImageUrl(product.imageUrl),
+});
+
+const withResolvedHeroImageUrl = (settings: HeroSettings): HeroSettings => ({
+  ...settings,
+  backgroundImageUrl: resolveImageUrl(settings.backgroundImageUrl),
 });
 
 interface LoginRequest {
@@ -106,6 +116,11 @@ export const getProducts = async (): Promise<Product[]> => {
   return products.map(withResolvedImageUrl);
 };
 
+export const getHeroSettings = async (): Promise<HeroSettings> => {
+  const settings = await fetchJson<HeroSettings>('/hero');
+  return withResolvedHeroImageUrl(settings);
+};
+
 export const getProduct = async (id: string): Promise<Product> => {
   const trimmedId = id.trim();
 
@@ -141,6 +156,42 @@ export const login = async ({ username, password }: LoginRequest): Promise<Login
     method: 'POST',
     body: JSON.stringify({ username, password }),
   });
+};
+
+interface HeroSettingsInput {
+  copy: string;
+  imageFile?: File | null;
+  removeImage?: boolean;
+}
+
+export const updateHeroSettings = async (
+  input: HeroSettingsInput,
+  token: string,
+): Promise<HeroSettings> => {
+  if (!token) {
+    throw new ApiError('Admin token is required', 401);
+  }
+
+  const formData = new FormData();
+  formData.append('copy', input.copy);
+
+  if (input.imageFile) {
+    formData.append('image', input.imageFile);
+  }
+
+  if (input.removeImage) {
+    formData.append('removeImage', 'true');
+  }
+
+  const settings = await fetchJson<HeroSettings>('/hero', {
+    method: 'PUT',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return withResolvedHeroImageUrl(settings);
 };
 
 interface ProductInput {

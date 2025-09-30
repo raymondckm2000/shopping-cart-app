@@ -2,9 +2,12 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import {
   ApiError,
   createProduct,
+  getHeroSettings,
   getProducts,
   login,
+  updateHeroSettings,
   updateProduct,
+  type HeroSettings,
   type Product,
 } from '../lib/api';
 import { deleteCookie, getCookie, setCookie } from '../lib/cookies';
@@ -44,6 +47,16 @@ const AdminPage = () => {
   const [isSavingProduct, setIsSavingProduct] = useState(false);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [fileInputKey, setFileInputKey] = useState(0);
+  const [heroSettings, setHeroSettings] = useState<HeroSettings | null>(null);
+  const [isLoadingHeroSettings, setIsLoadingHeroSettings] = useState(false);
+  const [heroSettingsError, setHeroSettingsError] = useState<string | null>(null);
+  const [heroCopy, setHeroCopy] = useState('');
+  const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
+  const [heroPreviewUrl, setHeroPreviewUrl] = useState<string | null>(null);
+  const [heroMessage, setHeroMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
+  const [isSavingHeroSettings, setIsSavingHeroSettings] = useState(false);
+  const [removeHeroImage, setRemoveHeroImage] = useState(false);
+  const [heroFileInputKey, setHeroFileInputKey] = useState(0);
 
   useEffect(() => {
     if (token) {
@@ -56,6 +69,25 @@ const AdminPage = () => {
       deleteCookie(TOKEN_COOKIE_NAME);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (heroImageFile) {
+      const objectUrl = URL.createObjectURL(heroImageFile);
+      setHeroPreviewUrl(objectUrl);
+
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+    }
+
+    if (removeHeroImage) {
+      setHeroPreviewUrl(null);
+    } else {
+      setHeroPreviewUrl(heroSettings?.backgroundImageUrl ?? null);
+    }
+
+    return undefined;
+  }, [heroImageFile, heroSettings, removeHeroImage]);
 
   useEffect(() => {
     if (!token) {
@@ -86,6 +118,47 @@ const AdminPage = () => {
     };
 
     void loadProducts();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadHeroSettings = async () => {
+      setIsLoadingHeroSettings(true);
+      setHeroSettingsError(null);
+      setHeroMessage(null);
+
+      try {
+        const data = await getHeroSettings();
+
+        if (!isCancelled) {
+          setHeroSettings(data);
+          setHeroCopy(data.copy ?? '');
+          setHeroImageFile(null);
+          setRemoveHeroImage(false);
+          setHeroFileInputKey((prev) => prev + 1);
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          setHeroSettings(null);
+          setHeroSettingsError('載入首頁設定時發生錯誤，請稍後再試。');
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoadingHeroSettings(false);
+        }
+      }
+    };
+
+    void loadHeroSettings();
 
     return () => {
       isCancelled = true;
@@ -161,6 +234,28 @@ const AdminPage = () => {
     handleInputChange('imageFile', file);
   };
 
+  const handleHeroCopyChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setHeroCopy(event.target.value);
+    setHeroMessage(null);
+  };
+
+  const handleHeroFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0] ? event.target.files[0] : null;
+    setHeroImageFile(file);
+    setHeroMessage(null);
+
+    if (file) {
+      setRemoveHeroImage(false);
+    }
+  };
+
+  const handleRemoveHeroBackground = () => {
+    setHeroImageFile(null);
+    setRemoveHeroImage(true);
+    setHeroMessage(null);
+    setHeroFileInputKey((prev) => prev + 1);
+  };
+
   const parsePriceAndStock = () => {
     const trimmedName = formState.name.trim();
 
@@ -196,6 +291,52 @@ const AdminPage = () => {
       description: formState.description.trim() || undefined,
       imageFile: formState.imageFile,
     };
+  };
+
+  const handleHeroSettingsSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!token) {
+      setHeroMessage({ type: 'error', text: '請重新登入後再試。' });
+      return;
+    }
+
+    setIsSavingHeroSettings(true);
+    setHeroMessage(null);
+    setHeroSettingsError(null);
+
+    try {
+      const updated = await updateHeroSettings(
+        {
+          copy: heroCopy,
+          imageFile: heroImageFile,
+          removeImage: removeHeroImage && !heroImageFile,
+        },
+        token,
+      );
+
+      setHeroSettings(updated);
+      setHeroCopy(updated.copy ?? '');
+      setHeroImageFile(null);
+      setRemoveHeroImage(false);
+      setHeroFileInputKey((prev) => prev + 1);
+      setHeroMessage({ type: 'success', text: '首頁設定已更新。' });
+    } catch (error) {
+      if (error instanceof ApiError) {
+        if (error.status === 400) {
+          setHeroMessage({ type: 'error', text: '送出的資料有誤，請確認後再試。' });
+        } else if (error.status === 401) {
+          setHeroMessage({ type: 'error', text: '登入逾時，請重新登入。' });
+          setToken(null);
+        } else {
+          setHeroMessage({ type: 'error', text: '儲存首頁設定時發生錯誤，請稍後再試。' });
+        }
+      } else {
+        setHeroMessage({ type: 'error', text: '儲存首頁設定時發生錯誤，請稍後再試。' });
+      }
+    } finally {
+      setIsSavingHeroSettings(false);
+    }
   };
 
   const handleProductSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -255,6 +396,15 @@ const AdminPage = () => {
     setLoginError(null);
     setProductsError(null);
     setFormMessage(null);
+    setHeroSettings(null);
+    setHeroCopy('');
+    setHeroImageFile(null);
+    setHeroPreviewUrl(null);
+    setHeroMessage(null);
+    setRemoveHeroImage(false);
+    setHeroSettingsError(null);
+    setIsLoadingHeroSettings(false);
+    setHeroFileInputKey((prev) => prev + 1);
   };
 
   if (!token) {
@@ -308,6 +458,79 @@ const AdminPage = () => {
       </header>
 
       <div className="admin-layout">
+        <section className="admin-card">
+          <h2 className="admin-card__title">首頁橫幅設定</h2>
+          {heroSettingsError ? <p className="alert alert--error">{heroSettingsError}</p> : null}
+          {isLoadingHeroSettings ? <p>載入中…</p> : null}
+          <form className="admin-form" onSubmit={handleHeroSettingsSubmit}>
+            <label className="form-field">
+              <span>宣傳文案</span>
+              <textarea
+                value={heroCopy}
+                onChange={handleHeroCopyChange}
+                disabled={isSavingHeroSettings || isLoadingHeroSettings}
+                rows={4}
+                placeholder="輸入首頁宣傳文字，例如促銷活動或品牌故事。"
+              />
+            </label>
+            <label className="form-field">
+              <span>背景圖片</span>
+              <input
+                key={heroFileInputKey}
+                type="file"
+                accept="image/*"
+                onChange={handleHeroFileChange}
+                disabled={isSavingHeroSettings || isLoadingHeroSettings}
+              />
+            </label>
+            <div className="admin-hero-preview">
+              <div
+                className={`hero-preview${heroPreviewUrl ? ' hero-preview--with-image' : ''}`}
+                style={heroPreviewUrl ? { backgroundImage: `url(${heroPreviewUrl})` } : undefined}
+              >
+                <div className="hero-preview__backdrop" aria-hidden="true" />
+                <div className="hero-preview__content">
+                  <p className="hero-preview__copy">
+                    {heroCopy.trim()
+                      ? heroCopy
+                      : '在此輸入首頁宣傳文案，向顧客傳達品牌亮點與最新活動。'}
+                  </p>
+                </div>
+              </div>
+              {!heroPreviewUrl ? (
+                <p className="hero-preview__hint">未設定圖片時會使用預設漸層背景。</p>
+              ) : null}
+            </div>
+            {heroMessage ? (
+              <p
+                className={`alert ${
+                  heroMessage.type === 'error' ? 'alert--error' : 'alert--success'
+                }`}
+              >
+                {heroMessage.text}
+              </p>
+            ) : null}
+            <div className="admin-form__actions">
+              {!removeHeroImage && (heroSettings?.backgroundImageUrl || heroImageFile) ? (
+                <button
+                  type="button"
+                  className="button button--secondary"
+                  onClick={handleRemoveHeroBackground}
+                  disabled={isSavingHeroSettings || isLoadingHeroSettings}
+                >
+                  移除背景圖片
+                </button>
+              ) : null}
+              <button
+                type="submit"
+                className="button button--primary"
+                disabled={isSavingHeroSettings || isLoadingHeroSettings}
+              >
+                {isSavingHeroSettings ? '儲存中…' : '更新首頁設定'}
+              </button>
+            </div>
+          </form>
+        </section>
         <section className="admin-card">
           <h2 className="admin-card__title">{editingProductId ? '編輯產品' : '新增產品'}</h2>
           <form className="admin-form" onSubmit={handleProductSubmit}>

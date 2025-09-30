@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/CartContext';
-import { getProducts, type Product } from '../lib/api';
+import { getHeroSettings, getProducts, type HeroSettings, type Product } from '../lib/api';
 
 const ITEMS_PER_BATCH = 8;
 
@@ -11,6 +11,31 @@ const HomeProductsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_BATCH);
+  const [heroSettings, setHeroSettings] = useState<HeroSettings | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchHero = async () => {
+      try {
+        const data = await getHeroSettings();
+
+        if (!cancelled) {
+          setHeroSettings(data);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setHeroSettings(null);
+        }
+      }
+    };
+
+    void fetchHero();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -75,8 +100,22 @@ const HomeProductsPage = () => {
     [],
   );
 
+  const heroCopy = heroSettings?.copy?.trim()
+    ? heroSettings.copy
+    : 'Discover products curated to brighten your day and elevate your routine.';
+  const heroHasImage = Boolean(heroSettings?.backgroundImageUrl);
+
   return (
     <section className="page">
+      <div
+        className={`home-hero${heroHasImage ? ' home-hero--with-image' : ''}`}
+        style={heroHasImage ? { backgroundImage: `url(${heroSettings?.backgroundImageUrl})` } : undefined}
+      >
+        <div className="home-hero__overlay" aria-hidden="true" />
+        <div className="home-hero__content">
+          <p className="home-hero__copy">{heroCopy}</p>
+        </div>
+      </div>
       <header className="page__header">
         <h1 className="page__title">Products</h1>
         <p className="page__subtitle">Browse our curated catalog and discover your next purchase.</p>
