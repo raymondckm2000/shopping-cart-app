@@ -512,14 +512,21 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+codex/add-hero-aspect-ratio-handling-mxer0e
+
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.35));
   backdrop-filter: blur(2px);
+ main
 }
 
 .home-hero--with-image .home-hero__copy {
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
+codex/add-hero-aspect-ratio-handling-mxer0e
+  text-shadow: 0 6px 24px rgba(15, 23, 42, 0.5);
+=======
+ main
 }
 
 .home-hero__copy {
