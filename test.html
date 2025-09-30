@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merrimore Treats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --brand: #2f9c5b;
+        --brand-dark: #267947;
+        --text-dark: #122022;
+        --text-muted: #4d5a5d;
+        --surface: #ffffff;
+        --surface-muted: #f5f7f8;
+        --shadow: rgba(18, 32, 34, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text-dark);
+        background: #f8fbfc;
+        line-height: 1.6;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 32px 96px;
+      }
+
+      header {
+        padding: 28px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-weight: 700;
+        font-size: 1.4rem;
+        color: var(--text-dark);
+      }
+
+      nav a {
+        margin: 0 16px;
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+
+      nav a.active {
+        color: var(--brand);
+      }
+
+      .cta-link {
+        padding: 12px 22px;
+        background: var(--brand);
+        color: #fff;
+        border-radius: 999px;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(47, 156, 91, 0.25);
+      }
+
+      .hero {
+        margin-top: 36px;
+        display: grid;
+        gap: 48px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 3.3vw, 3.4rem);
+        line-height: 1.1;
+        margin-bottom: 20px;
+      }
+
+      .hero p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        margin-bottom: 28px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 36px;
+      }
+
+      .button-primary,
+      .button-secondary {
+        padding: 13px 26px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+
+      .button-primary {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: 0 18px 35px rgba(47, 156, 91, 0.25);
+      }
+
+      .button-secondary {
+        background: var(--surface);
+        color: var(--text-dark);
+        box-shadow: 0 10px 25px var(--shadow);
+      }
+
+      .hero-card {
+        display: inline-flex;
+        gap: 22px;
+        padding: 20px 24px;
+        background: var(--surface);
+        border-radius: 18px;
+        box-shadow: 0 18px 40px rgba(18, 32, 34, 0.12);
+        align-items: center;
+      }
+
+      .hero-card .icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: rgba(47, 156, 91, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--brand);
+      }
+
+      .hero-card h3 {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+
+      .hero-card p {
+        margin: 4px 0 0;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+      }
+
+      section {
+        margin-top: 96px;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 56px;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(2rem, 2.5vw, 2.6rem);
+        margin: 12px 0 8px;
+      }
+
+      .section-heading p {
+        max-width: 600px;
+        margin: 0 auto;
+        color: var(--text-muted);
+      }
+
+      .feature-grid {
+        display: grid;
+        gap: 28px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .feature-card {
+        background: var(--surface);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(18, 32, 34, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .feature-card img {
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .feature-card-content {
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .feature-card h3 {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.98rem;
+      }
+
+      .feature-card a {
+        margin-top: auto;
+        color: var(--brand);
+        font-weight: 600;
+      }
+
+      .story {
+        display: grid;
+        gap: 52px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        align-items: center;
+      }
+
+      .story h2 {
+        font-size: clamp(2rem, 2.5vw, 2.4rem);
+        margin-bottom: 16px;
+      }
+
+      .story p {
+        color: var(--text-muted);
+        margin-bottom: 26px;
+      }
+
+      .cta {
+        background: linear-gradient(180deg, #e8f8ef 0%, #d7f2e6 100%);
+        padding: 70px 60px;
+        border-radius: 26px;
+        text-align: center;
+        box-shadow: 0 40px 70px rgba(47, 156, 91, 0.18);
+      }
+
+      .cta h2 {
+        margin: 0 0 16px;
+        font-size: clamp(2.1rem, 2.6vw, 2.5rem);
+      }
+
+      .cta p {
+        margin: 0 auto 28px;
+        max-width: 480px;
+        color: var(--text-muted);
+      }
+
+      .cta-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      footer {
+        margin-top: 96px;
+        padding: 60px 32px 40px;
+        background: #0c1110;
+        color: #f0f4f5;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        gap: 40px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .footer-col h4 {
+        margin-bottom: 18px;
+        font-size: 1rem;
+        color: #e8f8ef;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .footer-col p,
+      .footer-col a,
+      .footer-col li {
+        color: rgba(240, 244, 245, 0.75);
+        font-size: 0.95rem;
+      }
+
+      .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .footer-contact {
+        display: grid;
+        gap: 8px;
+        margin: 18px 0 0;
+      }
+
+      .footer-base {
+        margin-top: 40px;
+        padding-top: 28px;
+        border-top: 1px solid rgba(232, 248, 239, 0.08);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: space-between;
+        color: rgba(240, 244, 245, 0.55);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 640px) {
+        header {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        nav {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+          justify-content: center;
+        }
+
+        .page {
+          padding: 0 20px 72px;
+        }
+
+        .cta {
+          padding: 56px 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="logo">Merrimore</div>
+        <nav>
+          <a href="#" class="active">Home</a>
+          <a href="#">Products</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </nav>
+        <a class="cta-link" href="#">Get in Touch</a>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h1>Premium Treats from the Heart of Mongolia</h1>
+          <p>
+            Discover authentic, natural pet treats crafted from the pristine
+            landscapes of Mongolia. Each treat tells a story of tradition,
+            purity, and love for your beloved companions.
+          </p>
+          <div class="hero-actions">
+            <a class="button-primary" href="#">Explore Treats</a>
+            <a class="button-secondary" href="#">Our Story</a>
+          </div>
+
+          <div class="hero-card">
+            <div class="icon">⭐</div>
+            <div>
+              <h3>What Makes Us Special</h3>
+              <p>100% Natural &nbsp;&nbsp;•&nbsp;&nbsp; Premium Quality &nbsp;&nbsp;•&nbsp;&nbsp; Made with Love</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <img
+            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1180&q=80"
+            alt="Mongolian landscape with horses and herders"
+          />
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <h2>Featured Treats</h2>
+          <p>
+            Hand-selected premium treats that showcase the finest ingredients
+            from Mongolia’s vast steppes.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <img
+              src="https://images.unsplash.com/photo-1588165757774-da8242c72fd2?auto=format&fit=crop&w=900&q=80"
+              alt="Yak horn chew treats"
+            />
+            <div class="feature-card-content">
+              <h3>Yak Chews</h3>
+              <p>
+                Traditional long-lasting cheese snacks made from pure yak milk.
+              </p>
+              <a href="#">Learn More</a>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <img
+              src="https://images.unsplash.com/photo-1604908177666-3f88f52999e9?auto=format&fit=crop&w=900&q=80"
+              alt="Plate of sliced lamb jerky"
+            />
+            <div class="feature-card-content">
+              <h3>Lamb Jerky</h3>
+              <p>
+                Free-range Mongolian lamb, air-dried to perfection for
+                irresistible flavor.
+              </p>
+              <a href="#">Learn More</a>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <img
+              src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80"
+              alt="Mongolian goat horn chew"
+            />
+            <div class="feature-card-content">
+              <h3>Goat Horn</h3>
+              <p>
+                A natural and durable chew for dogs, sourced from Mongolian
+                goats.
+              </p>
+              <a href="#">Learn More</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="story">
+        <div>
+          <img
+            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1180&q=80"
+            alt="Herders walking with livestock at sunrise"
+          />
+        </div>
+        <div>
+          <h2>From Mongolia with Love</h2>
+          <p>
+            Our journey began in the vast steppes of Mongolia, where traditional
+            herding practices have created some of the world’s purest and most
+            nutritious ingredients for pets.
+          </p>
+          <p>
+            Every treat is crafted with respect for ancient traditions and
+            modern quality standards, ensuring your pets receive only the finest
+            natural nutrition.
+          </p>
+          <a class="button-primary" href="#">Discover Our Story</a>
+        </div>
+      </section>
+
+      <section>
+        <div class="cta">
+          <h2>Ready to Treat Your Pet?</h2>
+          <p>
+            Join thousands of pet owners who trust Merrimore for premium,
+            natural treats from Mongolia.
+          </p>
+          <div class="cta-actions">
+            <a class="button-primary" href="#">Shop Now</a>
+            <a class="button-secondary" href="#">Get in Touch</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-col">
+          <div class="logo">Merrimore</div>
+          <p>
+            Premium pet treats from Mongolia, crafted with traditional methods
+            and the finest natural ingredients. Supporting both your pets and
+            Mongolian herding communities.
+          </p>
+          <div class="footer-contact">
+            <span>📧 hello@merrimore.com</span>
+            <span>📞 +1 (555) 292-4527</span>
+            <span>📍 Austin, TX</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Products</h4>
+          <ul class="footer-links">
+            <li><a href="#">Yak Chews</a></li>
+            <li><a href="#">Lamb Jerky</a></li>
+            <li><a href="#">Horse Milk Treats</a></li>
+            <li><a href="#">All Products</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="#">Product Information</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Wholesale</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-base">
+        <span>© 2024 Merrimore. All rights reserved. Made with love for pets everywhere.</span>
+        <span>
+          <a href="#" style="color: inherit;">Privacy Policy</a> ·
+          <a href="#" style="color: inherit;">Terms of Service</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
