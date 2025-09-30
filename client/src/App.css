@@ -465,7 +465,7 @@ a:hover {
   overflow: hidden;
   background: linear-gradient(135deg, #1d4ed8, #7c3aed);
   color: #f8fafc;
-  padding: clamp(4.5rem, 9vw, 7.5rem) clamp(1.5rem, 5vw, 3.5rem);
+  padding: clamp(9rem, 18vw, 15rem) clamp(1.5rem, 5vw, 3.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
